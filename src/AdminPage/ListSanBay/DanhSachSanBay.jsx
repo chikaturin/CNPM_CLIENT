@@ -13,7 +13,7 @@ const DanhSachSanBay = () => {
   const handleDeleteSanBay = async (_id) => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/DeleteDanhSachSanBay/${_id}`,
+        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/DeleteDanhSachSanBay/${_id}`,
         {
           method: "DELETE",
         }

@@ -14,7 +14,7 @@ const CreateDanhSachSanBay = () => {
 
     try {
       const res = await fetch(
-        "http://localhost:3000/api/CreateDanhSachSanBay",
+        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/CreateDanhSachSanBay",
         {
           method: "POST",
           headers: {
