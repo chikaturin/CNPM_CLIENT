@@ -78,9 +78,6 @@ const DanhSachSanBay = () => {
                 <td className="border px-4 py-2">{sanBay.TenSanBay}</td>
                 <td className="border px-4 py-2">{sanBay.ThanhPho}</td>
                 <td className="border px-4 py-2 flex justify-center">
-                  <button className="bg-blue-500 px-4 mr-2 py-2 w-fit h-fit hover:bg-blue-700 text-white font-bold rounded">
-                    <FontAwesomeIcon icon={faEdit} />
-                  </button>
                   <button
                     className="bg-red-500 px-4 py-2 w-fit h-fit hover:bg-red-700 text-white font-bold rounded"
                     onClick={() => handleDeleteSanBay(sanBay._id)}

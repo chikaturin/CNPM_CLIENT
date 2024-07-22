@@ -97,9 +97,6 @@ const DanhSachPhuongTien = () => {
                 <td className="border px-4 py-2">{phuongTien.TenPhuongTien}</td>
                 <td className="border px-4 py-2">{phuongTien.SoGheToiDa}</td>
                 <td className="border px-4 py-2 flex justify-center">
-                  <button className="bg-blue-500 px-4 mr-2 py-2 w-fit h-fit hover:bg-blue-700 text-white font-bold rounded">
-                    <FontAwesomeIcon icon={faEdit} />
-                  </button>
                   <button
                     className="bg-red-500 px-4 py-2 w-fit h-fit hover:bg-red-700 text-white font-bold rounded"
                     onClick={() => handleDeletePhuongTien(phuongTien._id)}
