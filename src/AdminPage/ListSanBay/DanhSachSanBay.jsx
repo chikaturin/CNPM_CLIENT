@@ -2,12 +2,15 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import UseFetch from "../../Router/UseFetch";
-import { useNavigate } from "react-router-dom";
 
 const DanhSachSanBay = () => {
-  const navigate = useNavigate();
-  const { data: sanbay, error } = UseFetch(
-    "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDanhSachSanBay"
+  const {
+    data: sanbay,
+    error,
+    isLoading,
+  } = UseFetch(
+    "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDanhSachSanBay",
+    "danhSachSanBay"
   );
 
   const handleDeleteSanBay = async (_id) => {
@@ -31,12 +34,23 @@ const DanhSachSanBay = () => {
     }
   };
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (isLoading)
+    return (
+      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
+        Loading...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
+        Error: {error}
+      </div>
+    );
 
   return (
     <div className="w-auto h-full bg-white">
+      {isLoading && <div>Loading...</div>}
+      {error && <div>Error: {error}</div>}
       <div className="flex w-auto">
         <h1 className="text-black w-1/2 p-4 text-4xl">Danh sách sân bay</h1>
         <div className="flex w-1/2 mr-2 justify-end">

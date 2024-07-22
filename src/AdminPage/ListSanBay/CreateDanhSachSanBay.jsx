@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const CreateDanhSachSanBay = () => {
   const [danhSachSanBay, setDanhSachSanBay] = useState({});
@@ -46,7 +49,7 @@ const CreateDanhSachSanBay = () => {
       </h1>
       <div className="pt-4 flex justify-center">
         <div className="w-1/2">
-          <label className="text-black">Tên Sân Bay</label>
+          <label className="text-black pb-4">Tên Sân Bay</label>
           <input
             type="text"
             value={danhSachSanBay.TenSanBay || ""}
@@ -58,7 +61,7 @@ const CreateDanhSachSanBay = () => {
             }
             className="w-full mt-2 bg-slate-100 border-black rounded-lg  p-2"
           />
-          <label className="text-black">Thành phố</label>
+          <label className="text-black pb-4">Thành phố</label>
           <input
             type="text"
             value={danhSachSanBay.ThanhPho || ""}
@@ -78,6 +81,11 @@ const CreateDanhSachSanBay = () => {
             >
               Thêm sân bay
             </button>
+            <Link className="px-4 py-4" to={`/`}>
+              <button className="bg-red-500 px-4 py-2 hover:bg-red-700 text-white font-bold rounded">
+                <FontAwesomeIcon icon={faXmark} /> Cancel
+              </button>
+            </Link>
           </div>
         </div>
       </div>
