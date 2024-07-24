@@ -11,7 +11,7 @@ import {
 
 const Nav = () => {
   return (
-    <div className="bg-custom-gradient w-1/4 p-0 m-0 min-h-screen">
+    <div className="bg-custom-gradient w-1/4 p-0 m-0 h-full py-4">
       <h1 className="font-extrabold text-white text-center pt-4">
         DANH MỤC QUẢN LÝ
       </h1>
@@ -19,7 +19,7 @@ const Nav = () => {
         <ul>
           <li>
             <a
-              href="/"
+              href="/DanhSachSanBay"
               className="route text-white text-xl font-extrabold hover:text-black"
             >
               <FontAwesomeIcon icon={faPlane} /> Danh sách sân bay
@@ -55,6 +55,14 @@ const Nav = () => {
               className="route text-white text-xl font-extrabold hover:text-black"
             >
               <FontAwesomeIcon icon={faCar} /> Danh sách Chi Tiết Xe
+            </a>
+          </li>
+          <li className="pt-6">
+            <a
+              href="/MainHome"
+              className="route text-white text-xl font-extrabold hover:text-black"
+            >
+              <FontAwesomeIcon icon={faCar} /> Customer
             </a>
           </li>
         </ul>

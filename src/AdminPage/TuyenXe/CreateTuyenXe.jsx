@@ -78,8 +78,8 @@ const CreateTuyenXe = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            DiemSanBay: tuyenxe.DiemSanBay, // Gửi tên sân bay
-            DiemKetThuc: tuyenxe.DiemKetThuc, // Gửi tên sân bay
+            DiemSanBay: tuyenxe.DiemSanBay,
+            DiemKetThuc: tuyenxe.DiemKetThuc,
             ThoiGianKhoiHanh: thoiGianKhoiHanh.toISOString(),
             ThoiGianKetThuc: thoiGianKetThuc.toISOString(),
           }),

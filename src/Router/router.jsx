@@ -12,6 +12,10 @@ import ListDetailCar from "../AdminPage/DetailCar/ListDetailCar.jsx";
 import CreateDetailCar from "../AdminPage/DetailCar/CreateDetailCar.jsx";
 import GetDetailCar from "../AdminPage/DetailCar/GetDetailCar.jsx";
 import EditDetailCar from "../AdminPage/DetailCar/UpdateDetail.jsx";
+import BookingCar from "../Customer/BookingCar.jsx";
+import Customer from "../Customer.jsx";
+import Admin from "../Admin.jsx";
+import MainHome from "../Customer/home/MainHome.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const router = createBrowserRouter([
@@ -22,6 +26,18 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <MainHome />,
+      },
+      {
+        path: "Customer",
+        element: <Customer />,
+      },
+      {
+        path: "admin",
+        element: <Admin />,
+      },
+      {
+        path: "DanhSachSanBay",
         element: <DanhSachSanBay />,
       },
       {
@@ -61,12 +77,20 @@ const router = createBrowserRouter([
         element: <CreateDetailCar />,
       },
       {
-        path: `GetDetailCar/:id`,
+        path: "GetDetailCar/:id",
         element: <GetDetailCar />,
       },
       {
-        path: `EditDetailCar/:id`,
+        path: "EditDetailCar/:id",
         element: <EditDetailCar />,
+      },
+      {
+        path: "BookingCar",
+        element: <BookingCar />,
+      },
+      {
+        path: "MainHome",
+        element: <MainHome />,
       },
     ],
   },
