@@ -16,6 +16,7 @@ import BookingCar from "../Customer/BookingCar.jsx";
 import Customer from "../Customer.jsx";
 import Admin from "../Admin.jsx";
 import MainHome from "../Customer/home/MainHome.jsx";
+import ListBooking from "../Customer/listBooking/ListBooking.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const router = createBrowserRouter([
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
       {
         path: "MainHome",
         element: <MainHome />,
+      },
+      {
+        path: "ListBooking",
+        element: <ListBooking />,
       },
     ],
   },

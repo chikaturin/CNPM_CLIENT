@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlaneDeparture,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import backgroundImage from "../../assets/introPic.png";
 import debounce from "lodash/debounce";
 import "react-datepicker/dist/react-datepicker.css";
+import backgroundImage from "../../assets/introPic.png";
 
 const SearchBar = () => {
   const [diemKhoiHanh, setDiemKhoiHanh] = useState("");
@@ -74,12 +74,15 @@ const SearchBar = () => {
       alert("Vui lòng nhập đầy đủ thông tin");
       return;
     }
-    if (selectedDate <= new Date().toISOString().split("T")[0]) {
-      alert("Vui lòng chọn ngày lớn hơn ngày hiện tại");
-      return;
-    }
-    if (selectedHour <= new Date().toISOString().split("T")[1].split(".")[0]) {
-      alert("Vui lòng chọn giờ lớn hơn giờ hiện tại");
+
+    const currentDate = new Date().toISOString().split("T")[0];
+    const currentTime = new Date().toISOString().split("T")[1].split(".")[0];
+
+    if (
+      selectedDate < currentDate ||
+      (selectedDate === currentDate && selectedHour <= currentTime)
+    ) {
+      alert("Vui lòng chọn ngày và giờ lớn hơn hiện tại");
       return;
     }
 
@@ -89,7 +92,6 @@ const SearchBar = () => {
           diemKetThuc
         )}`
       );
-
       const tramDungs = tramDungResponse.data.tramDungs || [];
 
       if (tramDungs.length === 0) {
@@ -97,31 +99,73 @@ const SearchBar = () => {
         return;
       }
 
-      const IDTramS = tramDungs[0]._id; // Assuming the first item is what you need
-
-      // Navigate to BookingCar component with query parameters
-      navigate(
-        `/BookingCar?SanBay=${encodeURIComponent(
+      const sanBayResponse = await axios.get(
+        `http://localhost:3000/api/getSanBaybyTenSanBay?sanbay=${encodeURIComponent(
           diemKhoiHanh
-        )}&Date=${encodeURIComponent(selectedDate)}&Time=${encodeURIComponent(
-          selectedHour
-        )}&IDTram=${IDTramS}`
+        )}`
       );
+      const sanBay = sanBayResponse.data.sanbays[0];
+
+      if (!sanBay) {
+        alert("Không tìm thấy sân bay phù hợp");
+        return;
+      }
+
+      const maSanBay = sanBay.MaSB;
+
+      const tuyenResponse = await axios.get(
+        `http://localhost:3000/api/TuyenDiemSanBay?diemSanBay=${encodeURIComponent(
+          maSanBay
+        )}`
+      );
+      const tuyens = tuyenResponse.data.tuyens || [];
+      if (!tuyens.length) {
+        alert("Không tìm thấy tuyến xe từ sân bay này");
+        return;
+      }
+
+      const tuyen = tuyens[0];
+      if (tuyen.DiemSanBay !== maSanBay) {
+        alert("Chưa có tuyến từ sân bay này đến trạm dừng");
+        return;
+      }
+
+      const maTuyen = tuyen.MaTuyen;
+      const tramDung = tramDungs.find((tram) => tram.MaTuyen === maTuyen);
+
+      if (!tramDung) {
+        alert("Chưa có tuyến xe từ sân bay này đến trạm dừng");
+        return;
+      } else {
+        const IDTramS = tramDung._id;
+        navigate(
+          `/ListBooking?SanBay=${encodeURIComponent(
+            diemKhoiHanh
+          )}&Date=${encodeURIComponent(selectedDate)}&Time=${encodeURIComponent(
+            selectedHour
+          )}&IDTram=${IDTramS}&MaSB=${maSanBay}`
+        );
+      }
     } catch (err) {
-      console.error("Error fetching tram data:", err.response || err.message);
-      setError("Lỗi khi lấy trạm dừng: " + err.message);
+      console.error(
+        "Error fetching tram data:",
+        err.response ? err.response.data : err.message
+      );
+      setError(
+        "Lỗi khi lấy trạm dừng: " +
+          (err.response ? err.response.data.message : err.message)
+      );
     }
   };
-
   return (
     <div
       className="h-auto bg-cover w-full"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <div className=" mx-auto pt-12 container pb-20">
-        <div className=" h-fit bg-white rounded-xl justify-center grid grid-cols-6 w-full ">
-          <div className=" h-fit p-5 w-full">
-            <div className=" ">
+      <div className="mx-auto pt-12 container pb-20">
+        <div className="h-fit bg-white rounded-xl justify-center grid grid-cols-6 w-full">
+          <div className="h-fit p-5 w-full">
+            <div>
               <label className="text-black font-bold flex mb-2 items-center space-x-2">
                 Từ sân bay
               </label>
@@ -140,7 +184,7 @@ const SearchBar = () => {
                   placeholder="Sân bay khởi hành"
                 />
               </div>
-              <ul className=" bg-white w-full overflow-auto mt-4">
+              <ul className="bg-white w-full overflow-auto mt-4">
                 {suggestions.sanBays.map((sanBay, index) => (
                   <li
                     key={index}
@@ -152,11 +196,11 @@ const SearchBar = () => {
               </ul>
             </div>
           </div>
-          <span className="w-full text-center pb-6 mt-11  text-3xl pr-9 translate-y-2">
+          <span className="w-full text-center pb-6 mt-11 text-3xl pr-9 translate-y-2">
             ⇌
           </span>
-          <div className=" h-fit pt-5 pr-5 w-full">
-            <div className=" ">
+          <div className="h-fit pt-5 pr-5 w-full">
+            <div>
               <label className="text-black font-bold flex mb-2 items-center space-x-2">
                 Đến khu vực địa chỉ
               </label>
@@ -175,7 +219,7 @@ const SearchBar = () => {
                   placeholder="Đến khu vực địa chỉ tòa nhà"
                 />
               </div>
-              <ul className=" bg-white w-full overflow-auto mt-4">
+              <ul className="bg-white w-full overflow-auto mt-4">
                 {suggestions.tramDungs.map((suggestion, index) => (
                   <li
                     key={index}
@@ -224,6 +268,7 @@ const SearchBar = () => {
             </button>
           </div>
         </div>
+        {error && <div className="text-red-500 mt-4">{error}</div>}
       </div>
     </div>
   );

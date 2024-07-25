@@ -10,7 +10,7 @@ import pay7 from "../../assets/Pay7.png";
 import pay8 from "../../assets/Pay8.png";
 import btnHopTac from "../../assets/btnHopTac.png";
 
-export const Footer = () => {
+const Footer = () => {
   return (
     <footer className="bg-white py-10">
       <div>
@@ -249,3 +249,4 @@ export const Footer = () => {
     </footer>
   );
 };
+export default Footer;

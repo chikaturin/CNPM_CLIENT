@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
   faUser,
@@ -11,12 +12,13 @@ import {
   faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 const BookingCar = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
   const IDTram = searchParams.get("IDTram");
-  const id = "669fe98782a4ca5935e58246";
+  const id = searchParams.get("DetailCarID");
   const [detail, setDetail] = useState(null);
   const [tram, setTram] = useState(null);
   const [error, setError] = useState(null);
@@ -106,15 +108,15 @@ const BookingCar = () => {
   const handle_Submit = async (e) => {
     e.preventDefault();
     console.log("Dữ liệu gửi đi:", bookingCar);
+
     const {
-      Sdt,
+      Sdt, // Assuming this is equivalent to MaCus in the backend
       MaTram,
       DiemSanBay,
       DiemDon_Tra,
       NgayGioDat,
       SoKm,
       ThanhTien,
-      TrangThai,
       Description,
     } = bookingCar;
 
@@ -128,27 +130,7 @@ const BookingCar = () => {
       !ThanhTien ||
       !Description
     ) {
-      alert(
-        "Vui lòng nhập đầy đủ thông tin" +
-          "\n" +
-          Sdt +
-          "\n" +
-          MaTram +
-          "\n" +
-          DiemSanBay +
-          "\n" +
-          DiemDon_Tra +
-          "\n" +
-          NgayGioDat +
-          "\n" +
-          SoKm +
-          "\n" +
-          ThanhTien +
-          "\n" +
-          TrangThai +
-          "\n" +
-          Description
-      );
+      alert("Vui lòng nhập đầy đủ thông tin");
       return;
     }
 
@@ -162,14 +144,13 @@ const BookingCar = () => {
           },
           body: JSON.stringify({
             MaDetailCar: id,
-            Sdt: bookingCar.Sdt,
+            MaCus: bookingCar.Sdt,
             MaTram: bookingCar.MaTram,
             DiemSanBay: SanBay,
             DiemDon_Tra: bookingCar.DiemDon_Tra,
             NgayGioDat: bookingCar.NgayGioDat,
             SoKm: bookingCar.SoKm,
             ThanhTien: bookingCar.ThanhTien,
-            Trangthai: bookingCar.TrangThai,
             Description: bookingCar.Description,
           }),
         }
@@ -180,13 +161,13 @@ const BookingCar = () => {
 
       if (res.ok) {
         alert("Đặt xe thành công");
-        // navigate("/ListDetailCar");
+        navigate("/");
       } else {
         alert(data.error || "Đã xảy ra lỗi khi đặt xe");
       }
     } catch (error) {
       console.error(error);
-      alert("Đã xảy ra lỗi khi kết nối tới máy chủ a");
+      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
     }
   };
 

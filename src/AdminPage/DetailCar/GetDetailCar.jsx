@@ -10,6 +10,7 @@ const ListDetailCar = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
   const fetchDetailCar = async () => {
     try {
       const res = await fetch(
