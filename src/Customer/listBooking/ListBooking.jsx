@@ -11,6 +11,7 @@ import listbookign from "../../assets/listbooking.png";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 const ListBooking = () => {
+  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
   const navigate = useNavigate();
   const [detailCar, setDetailCar] = useState([]);
   const [selected, setSelected] = useState("Car");
@@ -33,9 +34,7 @@ const ListBooking = () => {
 
   const fetchDetailCar = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/FindDetailCarID?MaSB=${MaSB}`
-      );
+      const res = await fetch(`${url}/FindDetailCarID?MaSB=${MaSB}`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }

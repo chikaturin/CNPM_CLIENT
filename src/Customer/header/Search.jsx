@@ -11,6 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import backgroundImage from "../../assets/introPic.png";
 
 const SearchBar = () => {
+  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
   const [diemKhoiHanh, setDiemKhoiHanh] = useState("");
   const [diemKetThuc, setDiemKetThuc] = useState("");
   const [selectedHour, setSelectedHour] = useState("");
@@ -24,9 +25,7 @@ const SearchBar = () => {
 
   const fetchAirportSuggestions = async (query) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/SuggestsAirpost?query=${query}`
-      );
+      const response = await axios.get(`${url}/SuggestsAirpost?query=${query}`);
       setSuggestions((prevSuggestions) => ({
         ...prevSuggestions,
         sanBays: response.data.sanBays,
@@ -39,7 +38,7 @@ const SearchBar = () => {
   const fetchTramDungSuggestions = async (query) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/SuggestsTramDung?query=${query}`
+        `${url}/SuggestsTramDung?query=${query}`
       );
       setSuggestions((prevSuggestions) => ({
         ...prevSuggestions,
@@ -88,9 +87,7 @@ const SearchBar = () => {
 
     try {
       const tramDungResponse = await axios.get(
-        `http://localhost:3000/api/TramDungByDiaChi?diaChi=${encodeURIComponent(
-          diemKetThuc
-        )}`
+        `${url}/TramDungByDiaChi?diaChi=${encodeURIComponent(diemKetThuc)}`
       );
       const tramDungs = tramDungResponse.data.tramDungs || [];
 
@@ -100,9 +97,7 @@ const SearchBar = () => {
       }
 
       const sanBayResponse = await axios.get(
-        `http://localhost:3000/api/getSanBaybyTenSanBay?sanbay=${encodeURIComponent(
-          diemKhoiHanh
-        )}`
+        `${url}/getSanBaybyTenSanBay?sanbay=${encodeURIComponent(diemKhoiHanh)}`
       );
       const sanBay = sanBayResponse.data.sanbays[0];
 
@@ -114,9 +109,7 @@ const SearchBar = () => {
       const maSanBay = sanBay.MaSB;
 
       const tuyenResponse = await axios.get(
-        `http://localhost:3000/api/TuyenDiemSanBay?diemSanBay=${encodeURIComponent(
-          maSanBay
-        )}`
+        `${url}/TuyenDiemSanBay?diemSanBay=${encodeURIComponent(maSanBay)}`
       );
       const tuyens = tuyenResponse.data.tuyens || [];
       if (!tuyens.length) {
