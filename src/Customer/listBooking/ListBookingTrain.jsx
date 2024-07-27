@@ -5,7 +5,7 @@ import imagelist from "../../assets/busimage.png";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 const ListBookingBus = () => {
-  const urltest = "http://localhost:3000/api";
+  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
   const navigate = useNavigate();
   const [fetchError, setFetchError] = useState(null);
   const [searchParams] = useSearchParams();
@@ -21,7 +21,7 @@ const ListBookingBus = () => {
   const fetchTrains = async () => {
     setFetchError(null);
     try {
-      const res = await fetch(`${urltest}/SearchFindPhuongTien/false`);
+      const res = await fetch(`${url}/SearchFindPhuongTien/false`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -36,7 +36,7 @@ const ListBookingBus = () => {
   const fetchTramTrain = async () => {
     if (!IDTram) return;
     try {
-      const res = await fetch(`${urltest}/GetTramDungID/${IDTram}`);
+      const res = await fetch(`${url}/GetTramDungID/${IDTram}`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -51,7 +51,7 @@ const ListBookingBus = () => {
   const fetchTuyenSB = async (MaSB) => {
     if (!MaSB) return;
     try {
-      const res = await fetch(`${urltest}/TuyenDiemSanBay?diemSanBay=${MaSB}`);
+      const res = await fetch(`${url}/TuyenDiemSanBay?diemSanBay=${MaSB}`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
