@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,8 +11,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import backgroundImage from "../../assets/introPic.png";
 
 const SearchBar = () => {
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
-  const [diemKhoiHanh, setDiemKhoiHanh] = useState("");
+  const url = "http://localhost:3000/api";
+  const [diemSanBay, setDiemKhoiHanh] = useState("");
   const [diemKetThuc, setDiemKetThuc] = useState("");
   const [selectedHour, setSelectedHour] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -20,6 +20,8 @@ const SearchBar = () => {
     sanBays: [],
     tramDungs: [],
   });
+  const [showAirportSuggestions, setShowAirportSuggestions] = useState(false);
+  const [showTramDungSuggestions, setShowTramDungSuggestions] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -58,18 +60,43 @@ const SearchBar = () => {
     300
   );
 
-  const handleSuggestionClick = (suggestion, type) => {
-    if (type === "sanBays") {
-      setDiemKhoiHanh(suggestion);
-      setSuggestions({ sanBays: [], tramDungs: [] });
-    } else if (type === "tramDungs") {
-      setDiemKetThuc(suggestion);
-      setSuggestions({ sanBays: [], tramDungs: [] });
-    }
+  const handleAirportSuggestionClick = (suggestion) => {
+    setDiemKhoiHanh(suggestion);
+    setShowAirportSuggestions(false);
+  };
+
+  const handleTramDungSuggestionClick = (suggestion) => {
+    setDiemKetThuc(suggestion);
+    setShowTramDungSuggestions(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        !event.target.closest(".suggestion-container-airport") &&
+        !event.target.closest(".suggestion-container-tram")
+      ) {
+        setShowAirportSuggestions(false);
+        setShowTramDungSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleAirportInputFocus = () => {
+    setShowAirportSuggestions(true);
+  };
+
+  const handleTramDungInputFocus = () => {
+    setShowTramDungSuggestions(true);
   };
 
   const handleSubmit = async () => {
-    if (!diemKhoiHanh || !diemKetThuc || !selectedDate || !selectedHour) {
+    if (!diemSanBay || !diemKetThuc || !selectedDate || !selectedHour) {
       alert("Vui lòng nhập đầy đủ thông tin");
       return;
     }
@@ -97,7 +124,9 @@ const SearchBar = () => {
       }
 
       const sanBayResponse = await axios.get(
-        `${url}/getSanBaybyTenSanBay?sanbay=${encodeURIComponent(diemKhoiHanh)}`
+        `${url}/getSanBaybyTenSanBay?TenSanBay=${encodeURIComponent(
+          diemSanBay
+        )}`
       );
       const sanBay = sanBayResponse.data.sanbays[0];
 
@@ -132,8 +161,8 @@ const SearchBar = () => {
       } else {
         const IDTramS = tramDung._id;
         navigate(
-          `/ListBooking?SanBay=${encodeURIComponent(
-            diemKhoiHanh
+          `/ListMain?SanBay=${encodeURIComponent(
+            diemSanBay
           )}&Date=${encodeURIComponent(selectedDate)}&Time=${encodeURIComponent(
             selectedHour
           )}&IDTram=${IDTramS}&MaSB=${maSanBay}`
@@ -150,15 +179,16 @@ const SearchBar = () => {
       );
     }
   };
+
   return (
     <div
       className="h-auto bg-cover w-full"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <div className="mx-auto pt-12 container pb-20">
-        <div className="h-fit bg-white rounded-xl justify-center grid grid-cols-6 w-full">
-          <div className="h-fit p-5 w-full">
-            <div>
+      <div className="mx-auto pt-12 container pb-24">
+        <div className="h-fit bg-white rounded-xl justify-center grid grid-cols-11 w-full">
+          <div className="h-fit col-span-2 p-5 w-full">
+            <div className="suggestion-container-airport">
               <label className="text-black font-bold flex mb-2 items-center space-x-2">
                 Từ sân bay
               </label>
@@ -168,37 +198,42 @@ const SearchBar = () => {
                 </span>
                 <input
                   type="text"
-                  value={diemKhoiHanh}
+                  value={diemSanBay}
                   onChange={(e) => {
                     setDiemKhoiHanh(e.target.value);
                     debouncedFetchAirportSuggestions(e.target.value);
+                    setShowAirportSuggestions(true);
                   }}
                   className="w-full bg-slate-100 outline-none pl-8 border-black rounded-lg p-2"
                   placeholder="Sân bay khởi hành"
+                  onFocus={handleAirportInputFocus}
                 />
               </div>
-              <ul className="bg-white w-full overflow-auto mt-4">
-                {suggestions.sanBays.map((sanBay, index) => (
-                  <li
-                    key={index}
-                    onClick={() => handleSuggestionClick(sanBay, "sanBays")}
-                  >
-                    {sanBay}
-                  </li>
-                ))}
-              </ul>
+              {showAirportSuggestions && (
+                <ul className="w-1/4 p-2 top-[170px] bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
+                  {suggestions.sanBays.map((sanBay, index) => (
+                    <li
+                      className=" hover:bg-blue-100 p-2 rounded-md border-b-gray-400 border-0 border-b-2 "
+                      key={index}
+                      onClick={() => handleAirportSuggestionClick(sanBay)}
+                    >
+                      {sanBay}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
-          <span className="w-full text-center pb-6 mt-11 text-3xl pr-9 translate-y-2">
+          <span className="w-full col-span-1 text-center pb-6 mt-11 text-3xl pr-9 translate-y-2">
             ⇌
           </span>
-          <div className="h-fit pt-5 pr-5 w-full">
-            <div>
+          <div className="h-fit pt-5 col-span-2 pr-5 w-full">
+            <div className="suggestion-container-tram">
               <label className="text-black font-bold flex mb-2 items-center space-x-2">
-                Đến khu vực địa chỉ
+                Đến khu vực địa chỉ{" "}
               </label>
               <div className="flex relative">
-                <span className="pl-1 absolute top-2">
+                <span className="pl-1 absolute z-50 top-2">
                   <FontAwesomeIcon icon={faLocationDot} />
                 </span>
                 <input
@@ -207,26 +242,29 @@ const SearchBar = () => {
                   onChange={(e) => {
                     setDiemKetThuc(e.target.value);
                     debouncedFetchTramDungSuggestions(e.target.value);
+                    setShowTramDungSuggestions(true);
                   }}
-                  className="w-full bg-slate-100 outline-none pl-8 border-black rounded-lg p-2"
+                  className="w-full bg-slate-100 outline-none pl-8 z-30 border-black rounded-lg p-2"
                   placeholder="Đến khu vực địa chỉ tòa nhà"
+                  onFocus={handleTramDungInputFocus}
                 />
               </div>
-              <ul className="bg-white w-full overflow-auto mt-4">
-                {suggestions.tramDungs.map((suggestion, index) => (
-                  <li
-                    key={index}
-                    onClick={() =>
-                      handleSuggestionClick(suggestion, "tramDungs")
-                    }
-                  >
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
+              {showTramDungSuggestions && (
+                <ul className="w-1/4 p-2 top-[170px] bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
+                  {suggestions.tramDungs.map((suggestion, index) => (
+                    <li
+                      className=" hover:bg-blue-100 p-2 rounded-md border-b-gray-400 border-0 border-b-2 "
+                      key={index}
+                      onClick={() => handleTramDungSuggestionClick(suggestion)}
+                    >
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
-          <div className="mt-5">
+          <div className="mt-5 col-span-2">
             <label className="text-black pl-2 font-bold flex mb-2 items-center space-x-2">
               Ngày khởi hành
             </label>
@@ -239,7 +277,7 @@ const SearchBar = () => {
               />
             </div>
           </div>
-          <div className="mt-5">
+          <div className="mt-5 col-span-2">
             <label className="text-black pl-2 font-bold flex mb-2 items-center space-x-2">
               Giờ khởi hành
             </label>
@@ -252,7 +290,7 @@ const SearchBar = () => {
               />
             </div>
           </div>
-          <div className="flex justify-center h-fit mt-[50px]">
+          <div className="flex justify-center col-span-1 h-fit mt-[50px]">
             <button
               onClick={handleSubmit}
               className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
