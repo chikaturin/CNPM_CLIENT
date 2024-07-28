@@ -10,7 +10,6 @@ import {
 const BookingTrain = () => {
   const navigate = useNavigate();
   const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
-  const urltest = "http://localhost:3000/api";
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
   const dateParam = searchParams.get("Date");
@@ -149,7 +148,7 @@ const BookingTrain = () => {
     console.log("Request data:", requestData);
 
     try {
-      const res = await fetch(`${urltest}/BuyTicketTrain`, {
+      const res = await fetch(`${url}/BuyTicketTrain`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

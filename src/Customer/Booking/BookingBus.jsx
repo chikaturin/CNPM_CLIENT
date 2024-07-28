@@ -10,7 +10,6 @@ import {
 const BookingBus = () => {
   const navigate = useNavigate();
   const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
-  const urltest = "http://localhost:3000/api";
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
   const dateParam = searchParams.get("Date");
@@ -118,7 +117,7 @@ const BookingBus = () => {
     const formattedDate = new Date(NgayGioKhoiHanh).toISOString();
 
     try {
-      const res = await fetch(`${urltest}/BuyTicketBus`, {
+      const res = await fetch(`${url}/BuyTicketBus`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
