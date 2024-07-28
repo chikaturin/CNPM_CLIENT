@@ -110,7 +110,7 @@ const BookingCar = () => {
     console.log("Dữ liệu gửi đi:", bookingCar);
 
     const {
-      Sdt, // Assuming this is equivalent to MaCus in the backend
+      Sdt,
       MaTram,
       DiemSanBay,
       DiemDon_Tra,

@@ -60,6 +60,7 @@ const ListBookingBus = () => {
         throw new Error("Network response was not ok");
       }
       const result = await res.json();
+      console.log("Fetched tramBus:", result);
       setTramBus(result || {});
     } catch (e) {
       console.error("Error fetching tramBus:", e);
@@ -101,13 +102,13 @@ const ListBookingBus = () => {
   };
 
   const handleSubmit = (busID) => {
-    // navigate(
-    //   `/BookingCar?SanBay=${encodeURIComponent(
-    //     SanBay
-    //   )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
-    //     Time
-    //   )}&IDTram=${IDTram}&BusID=${busID}`
-    // );
+    navigate(
+      `/BookingBus?SanBay=${encodeURIComponent(
+        SanBay
+      )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
+        Time
+      )}&IDTram=${IDTram}&PhuongTienID=${busID}`
+    );
   };
 
   const filteredBuses = (Array.isArray(bus) ? bus : []).filter((item) =>

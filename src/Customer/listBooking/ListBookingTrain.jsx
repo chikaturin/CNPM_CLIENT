@@ -83,11 +83,11 @@ const ListBookingBus = () => {
 
   const handleSubmit = (TrainID) => {
     navigate(
-      `/BookingCar?SanBay=${encodeURIComponent(
+      `/BookingTrain?SanBay=${encodeURIComponent(
         SanBay
       )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
         Time
-      )}&IDTram=${IDTram}&TrainID=${TrainID}`
+      )}&IDTram=${IDTram}&PhuongTienID=${TrainID}`
     );
   };
 

@@ -4,6 +4,8 @@ import BookingCar from "../Customer/Booking/BookingCar.jsx";
 import Customer from "../Customer.jsx";
 import MainHome from "../Customer/home/MainHome.jsx";
 import ListMain from "../Customer/listBooking/ListMain.jsx";
+import BookingBus from "../Customer/Booking/BookingBus.jsx";
+import BookingTrain from "../Customer/Booking/BookingTrain.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const router = createBrowserRouter([
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: "ListMain",
         element: <ListMain />,
+      },
+      {
+        path: "BookingBus",
+        element: <BookingBus />,
+      },
+      {
+        path: "BookingTrain",
+        element: <BookingTrain />,
       },
     ],
   },

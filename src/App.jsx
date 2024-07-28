@@ -5,17 +5,21 @@ import Footer from "./Customer/footer/Footer";
 const App = () => {
   const location = useLocation();
   const isBookingCar = location.pathname === "/BookingCar";
+  const isBookingBus = location.pathname === "/BookingBus";
+  const isBookingTrain = location.pathname === "/BookingTrain";
+  const isBookingPage = isBookingCar || isBookingBus || isBookingTrain;
 
   return (
     <div className="bg-[#F2F3F3]">
-      {isBookingCar ? (
+      {isBookingPage ? (
         <div>
           <Header />
           <div className="w-full h-screen bg-opacity-20 flex justify-center bg-slate-400">
-            <div className="w-3/4 h-3/4 translate-y-1/4 bg-white rounded-md">
+            <div className="w-3/4 h-[65%]  min-h-fit  translate-y-1/4 bg-white rounded-md">
               <Outlet />
             </div>
           </div>
+          <Footer />
         </div>
       ) : (
         <>
