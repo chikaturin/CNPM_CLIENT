@@ -12,6 +12,7 @@ import backgroundImage from "../../assets/introPic.png";
 
 const SearchBar = () => {
   const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const today = new Date().toISOString().slice(0, 16);
   const [diemKhoiHanh, setDiemKhoiHanh] = useState("");
   const [diemKetThuc, setDiemKetThuc] = useState("");
   const [selectedHour, setSelectedHour] = useState("");
@@ -246,6 +247,7 @@ const SearchBar = () => {
             <div className="items-center flex justify-center h-fit w-3/4 px-2 py-[6px] mx-2 bg-gray-200 shadow rounded-lg">
               <input
                 type="time"
+                min={today}
                 className="bg-transparent w-full h-fit outline-none text-center"
                 value={selectedHour}
                 onChange={(e) => setSelectedHour(e.target.value)}

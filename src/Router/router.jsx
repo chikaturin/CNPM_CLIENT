@@ -21,6 +21,8 @@ import ErrorPage from "./ErrorPage.jsx";
 import DatChoCuaToi from "../Customer/DatChoCuaToi/DatChoCuaToi.jsx";
 import LichSuDatCho from "../Customer/DatChoCuaToi/LichSuDatCho.jsx";
 import CancelTicket from "../Customer/CancelTicket.jsx";
+import CancelTicketTau from "../Customer/CancelTicketTau.jsx";
+import CancelTicketBus from "../Customer/CancelTicketBus.jsx";
 
 const router = createBrowserRouter([
   {
@@ -111,6 +113,14 @@ const router = createBrowserRouter([
       {
         path: "CancelTicket",
         element: <CancelTicket />,
+      },
+      {
+        path: "CancelTicketTau",
+        element: <CancelTicketTau />,
+      },
+      {
+        path: "CancelTicketBus",
+        element: <CancelTicketBus />,
       },
     ],
   },

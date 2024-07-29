@@ -12,6 +12,12 @@ function RightContent() {
   const filteredLichSuCar = lichSuCar.filter(
     (item) => item.MaKH === currentMaKH
   ); // Lọc lịch sử đặt xe theo mã khách hàng hiện tại
+  const filteredLichSuTau = lichSuTau.filter(
+    (item) => item.MaKH === currentMaKH
+  ); 
+  const filteredLichSuBus = lichSuBus.filter(
+    (item) => item.MaKH === currentMaKH
+  ); 
    const navigate = useNavigate();
 
    //get ls xe
@@ -74,10 +80,15 @@ function RightContent() {
     getLichSuDatBus();
   }, [url, currentMaKH]);
 
-  const handleSubmit = (maDX) => {
-    navigate(`/CancelTicket?MaDX=${encodeURIComponent(maDX)}`);
+  const handleSubmitCar = (maDX,id) => {
+    navigate(`/CancelTicket?MaDX=${encodeURIComponent(maDX)}&id=${encodeURIComponent(id)}`);
   }
-
+  const handleSubmitBus = (maDX,id) => {
+    navigate(`/CancelTicketBus?MaDX=${encodeURIComponent(maDX)}&id=${encodeURIComponent(id)}`);
+  }
+  const handleSubmitTau = (maDX,id) => {
+    navigate(`/CancelTicketTau?MaDX=${encodeURIComponent(maDX)}&id=${encodeURIComponent(id)}`);
+  }
   return (
     <div className="w-[70%] mt-10 h-[600px] overflow-y-auto">
       <div className=" w-full shadow bg-[#EDEDED] rounded-lg mb-8">
@@ -106,12 +117,50 @@ function RightContent() {
               Từ sân bay quốc tế tân sơn nhất
             </h2>
             <div className="flex my-1">
-              <p>Mã đặt chỗ của traveloki</p>
+              <p>Mã đặt chỗ Xe của traveloki</p>
               <p className="ml-1 font-bold ">{item.MaDX}</p>
             </div>
             <div className="flex">
               <div className="bg-blue-500 text-white rounded-full my-1 p-1">Trạng thái thanh toán</div>
-              <div className="ml-auto font-semibold text-blue-600 cursor-pointer hover:text-blue-800" onClick={() => handleSubmit(item.MaDX)}>
+              <div className="ml-auto font-semibold text-blue-600 cursor-pointer hover:text-blue-800" onClick={() => handleSubmitCar(item.MaDX,item._id)}>
+                Xem chi tiết
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+      {filteredLichSuTau.map((item) => (
+        <div key={item._id} className="w-full shadow bg-[#EDEDED] rounded-lg">
+          <div className="items-center p-4 mt-4">
+            <h2 className="font-bold text-xl">
+              Từ sân bay quốc tế tân sơn nhất
+            </h2>
+            <div className="flex my-1">
+              <p>Mã đặt chỗ Tàu của traveloki</p>
+              <p className="ml-1 font-bold ">{item.MaDX}</p>
+            </div>
+            <div className="flex">
+              <div className="bg-blue-500 text-white rounded-full my-1 p-1">Trạng thái thanh toán</div>
+              <div className="ml-auto font-semibold text-blue-600 cursor-pointer hover:text-blue-800" onClick={() => handleSubmitTau(item.MaDX,item._id)}>
+                Xem chi tiết
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+      {filteredLichSuBus.map((item) => (
+        <div key={item._id} className="w-full shadow bg-[#EDEDED] rounded-lg">
+          <div className="items-center p-4 mt-4">
+            <h2 className="font-bold text-xl">
+              Từ sân bay quốc tế tân sơn nhất
+            </h2>
+            <div className="flex my-1">
+              <p>Mã đặt chỗ Bus của traveloki</p>
+              <p className="ml-1 font-bold ">{item.MaDX}</p>
+            </div>
+            <div className="flex">
+              <div className="bg-blue-500 text-white rounded-full my-1 p-1">Trạng thái thanh toán</div>
+              <div className="ml-auto font-semibold text-blue-600 cursor-pointer hover:text-blue-800" onClick={() => handleSubmitBus(item.MaDX,item._id)}>
                 Xem chi tiết
               </div>
             </div>

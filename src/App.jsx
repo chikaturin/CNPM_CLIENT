@@ -5,11 +5,13 @@
   const App = () => {
     const location = useLocation();
     const isBookingCar = location.pathname === "/BookingCar";
-    const isCancelTicket = location.pathname === "/CancelTicket";
+    const isCancelTicketCar = location.pathname === "/CancelTicket";
+    const isCancelTicketTrain = location.pathname === "/CancelTicketTau";
+    const isCancelTicketBus = location.pathname === "/CancelTicketBus";
 
     return (
       <div className="bg-[#F2F3F3]">
-        {(isBookingCar  || isCancelTicket)?  (
+        {(isBookingCar  || isCancelTicketCar || isCancelTicketTrain || isCancelTicketBus)?  (
           <div>
             <Header />
             <div className="w-full h-screen bg-opacity-20 flex justify-center bg-slate-400">
