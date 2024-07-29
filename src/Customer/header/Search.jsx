@@ -182,12 +182,12 @@ const SearchBar = () => {
 
   return (
     <div
-      className="h-auto bg-cover w-full"
+      className="h-auto bg-cover w-full flex justify-center"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <div className="mx-auto pt-12 container pb-24">
-        <div className="h-fit bg-white rounded-xl justify-center grid grid-cols-11 w-full">
-          <div className="h-fit col-span-2 p-5 w-full">
+      <div className="mx-auto pt-12 flex justify-center w-full container pb-24">
+        <div className="h-fit bg-white rounded-xl p-4 justify-center grid xl:grid-cols-12 sm:grid-cols-6 grid-cols-2 w-full">
+          <div className="h-fit sm:col-span-2 col-span-1 p-5 w-full">
             <div className="suggestion-container-airport">
               <label className="text-black font-bold flex mb-2 items-center space-x-2">
                 Từ sân bay
@@ -227,7 +227,7 @@ const SearchBar = () => {
           <span className="w-full col-span-1 text-center pb-6 mt-11 text-3xl pr-9 translate-y-2">
             ⇌
           </span>
-          <div className="h-fit pt-5 col-span-2 pr-5 w-full">
+          <div className="h-fit pt-5 col-span-1 sm:col-span-3 pr-5 w-full">
             <div className="suggestion-container-tram">
               <label className="text-black font-bold flex mb-2 items-center space-x-2">
                 Đến khu vực địa chỉ{" "}
@@ -264,7 +264,7 @@ const SearchBar = () => {
               )}
             </div>
           </div>
-          <div className="mt-5 col-span-2">
+          <div className="mt-5 col-span-1 sm:col-span-2">
             <label className="text-black pl-2 font-bold flex mb-2 items-center space-x-2">
               Ngày khởi hành
             </label>
@@ -277,7 +277,7 @@ const SearchBar = () => {
               />
             </div>
           </div>
-          <div className="mt-5 col-span-2">
+          <div className="mt-5 col-span-1 sm:col-span-2">
             <label className="text-black pl-2 font-bold flex mb-2 items-center space-x-2">
               Giờ khởi hành
             </label>
@@ -290,7 +290,7 @@ const SearchBar = () => {
               />
             </div>
           </div>
-          <div className="flex justify-center col-span-1 h-fit mt-[50px]">
+          <div className="flex justify-center col-span-1 sm:col-span-1 h-fit mt-[50px]">
             <button
               onClick={handleSubmit}
               className="bg-blue-500 text-white font-bold py-2 px-4 rounded"

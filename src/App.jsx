@@ -12,7 +12,7 @@ const App = () => {
   return (
     <div className="bg-[#F2F3F3]">
       {isBookingPage ? (
-        <div>
+        <div className="w-full">
           <Header />
           <div className="w-full h-screen bg-opacity-20 flex justify-center bg-slate-400">
             <div className="w-3/4 h-[65%]  min-h-fit  translate-y-1/4 bg-white rounded-md">

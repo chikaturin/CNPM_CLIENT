@@ -6,6 +6,8 @@ import MainHome from "../Customer/home/MainHome.jsx";
 import ListMain from "../Customer/listBooking/ListMain.jsx";
 import BookingBus from "../Customer/Booking/BookingBus.jsx";
 import BookingTrain from "../Customer/Booking/BookingTrain.jsx";
+import Login from "../SingUp_Login/LogIn.jsx";
+import SignUp from "../SingUp_Login/SignUp.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const router = createBrowserRouter([
@@ -16,6 +18,14 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <Login />,
+      },
+      {
+        path: "SignUp",
+        element: <SignUp />,
+      },
+      {
+        path: "MainHome",
         element: <MainHome />,
       },
       {
