@@ -231,7 +231,7 @@ const BookingTrain = () => {
                     -
                   </button>
                   <span className="text-center h-full translate-y-1/4">
-                    {count}/vé
+                    {count} vé
                   </span>
                   <button
                     className="bg-slate-300 rounded-e-md"
