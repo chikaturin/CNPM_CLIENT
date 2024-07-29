@@ -89,7 +89,7 @@ function LichSuDatChoContent() {
         filterVehicle();
       }, [checkedItems, allData]);
     return ( 
-        <div className="w-[70%] mt-10">
+        <div className="w-[70%] mt-10 h-[700px] overflow-y-auto">
             <div className="w-full shadow bg-[#EDEDED] rounded-lg mb-6">
                 <div className="inline-flex items-center p-4">
                     <div className="mr-4">
