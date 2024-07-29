@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { parse, format, differenceInMinutes, differenceInHours, differenceInMilliseconds, isSameDay } from "date-fns";
+import { parse, format, differenceInMilliseconds, isSameDay } from "date-fns";
 
 import {
   faPlaneArrival,
@@ -32,8 +32,8 @@ const CancelTicketBus = () => {
         setDetailBookingTau(res.data.buyTicketTrain);
 
         // Giả sử chỉ có một đối tượng trong mảng datXes
-        const MaDetailTau = res.data.buyTicketTrain[0]?.MaDetailTau;
-        const id = res.data.buyTicketTrain[0]?._id; // Lấy id từ response
+        const MaDetailTau = res.data.buyTicketTrain?.MaPT;
+        const id = res.data.buyTicketTrain?._id; // Lấy id từ response
         setBookingId(id); // Lưu id vào state
         if (MaDetailTau) {
           await getDetailTau(MaDetailTau);
@@ -81,7 +81,7 @@ const CancelTicketBus = () => {
   // kiểm tra giờ hợp lệ để hủy vé
   const canCancelTicket = () => {
     const currentTime = new Date();
-    const bookingTime = new Date(detailBookingTau[0]?.NgayGioDat);
+    const bookingTime = new Date(detailBookingTau?.NgayGioDat);
    // Kiểm tra nếu thời gian chuẩn bị đi còn ít hơn 1 tiếng và cùng ngày
    const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
    if (isSameDay(currentTime, bookingTime) && differenceInMinutes < 60) {
@@ -94,7 +94,7 @@ const CancelTicketBus = () => {
    // Hàm kiểm tra thời gian đổi lịch
    const canChangeBooking = () => {
     const currentTime = new Date();
-    const bookingTime = new Date(detailBookingTau[0]?.NgayGioDat);
+    const bookingTime = new Date(detailBookingTau?.NgayGioDat);
     // Kiểm tra nếu thời gian chuẩn bị đi còn ít hơn 2 tiếng mà cùng ngày thì không cho đổi
     const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
     if (isSameDay(currentTime, bookingTime) && differenceInMinutes < 120) {
@@ -159,16 +159,16 @@ const CancelTicketBus = () => {
     <div className="p-4 w-full h-full pb-28 overflow-y-auto">
       <span className="bg-white w-[96%] p-2 -top-0 absolute font-bold text-xl">
         <span className="font-extrabold text-green-500 px-4">
-          {detailBookingTau[0]?.DiemDon}
+          {detailBookingTau?.DiemDon}
         </span>
         -
         <span className="font-extrabold text-green-500 px-4">
-          {detailBookingTau[0]?.DiemTra}
+          {detailBookingTau?.DiemTra}
         </span>
       </span>
       <div className="w-full mt-8">
         <div className="flex text-gray-500">
-        {detailTau[0]?.TenCty}
+        {detailTau?.TenCty}
         </div>
       </div>
       <div className="mt-2 bg-slate-100 p-4">
@@ -180,13 +180,13 @@ const CancelTicketBus = () => {
             <label className="font-bold">Sân bay</label>
             <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
               <FontAwesomeIcon icon={faPlaneArrival} />
-              <span className="ml-2">{detailBookingTau[0]?.DiemDon}</span>
+              <span className="ml-2">{detailBookingTau?.DiemDon}</span>
             </p>
             <label className="font-bold">Lịch đi</label>
             <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
               <FontAwesomeIcon icon={faCalendarDays} />
               <span className="ml-2">
-                {formatDate(detailBookingTau[0]?.NgayGioKhoiHanh)}
+                {formatDate(detailBookingTau?.NgayGioKhoiHanh)}
               </span>
             </p>
             <label className="font-bold">Nhập lịch muốn đổi</label>
@@ -205,7 +205,7 @@ const CancelTicketBus = () => {
               className="border mt-2 mb-4 outline-none text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2 w-full"
               type="text"
               name="Tên Phương Tiện"
-              value={detailTau[0]?.TenPhuongTien}
+              value={detailTau?.TenPhuongTien}
               disabled
             />
             <label className="font-bold">Số điện thoại</label>
@@ -224,7 +224,7 @@ const CancelTicketBus = () => {
         <div className="p-2 pl-8">
           <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
             <FontAwesomeIcon icon={faPlaneArrival} />
-            <span className="ml-2">{detailBookingTau[0]?.DiemTra}</span>
+            <span className="ml-2">{detailBookingTau?.DiemTra}</span>
           </p>
         </div>
       </div>
@@ -234,7 +234,7 @@ const CancelTicketBus = () => {
           <div className="text-center">
             <span
               className={
-                detailBookingTau[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "text-gray-300 font-bold"
                   : "text-red-600 font-bold"
               }
@@ -243,7 +243,7 @@ const CancelTicketBus = () => {
             </span>
             <span
               className={
-                detailBookingTau[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "text-gray-300"
                   : "text-red-600"
               }
@@ -252,14 +252,14 @@ const CancelTicketBus = () => {
             </span>
             <span
               className={`inline-block border-t-4 ${
-                detailBookingTau[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "border-gray-400"
                   : "border-red-600"
               } w-20 ml-1`}
             ></span>
             <span
               className={
-                detailBookingTau[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "text-blue-500"
                   : "text-red-500"
               }
@@ -268,14 +268,14 @@ const CancelTicketBus = () => {
             </span>
             <span
               className={`inline-block border-t-4 ${
-                detailBookingTau[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "border-blue-500"
                   : "border-gray-400"
               } w-20 mr-1`}
             ></span>
             <span
               className={
-                detailBookingTau[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "text-blue-500"
                   : "text-gray-300"
               }
@@ -284,7 +284,7 @@ const CancelTicketBus = () => {
             </span>
             <span
               className={
-                detailBookingTau[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "text-blue-500 font-bold"
                   : "text-gray-300 font-bold"
               }
@@ -297,7 +297,7 @@ const CancelTicketBus = () => {
           <div className="w-fit">
             <p className="text-gray-500 text-sm text-right">Tổng tiền xe</p>
             <span className="text-lg text-orange-400">
-              {detailBookingTau[0]?.ThanhTien} VND
+              {detailBookingTau?.ThanhTien} VND
             </span>
           </div>
           <button
