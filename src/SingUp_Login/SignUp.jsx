@@ -37,7 +37,7 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(
-        "https://api.htilssu.com/api/v1/auth/signup",
+        "https://api.htilssu.com/api/v1/auth//register ",
         {
           firstName,
           lastName,
