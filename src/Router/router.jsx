@@ -6,6 +6,9 @@ import MainHome from "../Customer/home/MainHome.jsx";
 import ListMain from "../Customer/listBooking/ListMain.jsx";
 import BookingBus from "../Customer/Booking/BookingBus.jsx";
 import BookingTrain from "../Customer/Booking/BookingTrain.jsx";
+
+import DatChoCuaToi from "../Customer/CustomerBooking/DatChoCuaToi";
+import LichSuDatCho from "../Customer/CustomerBooking/LichSuDatCho";
 import ErrorPage from "./ErrorPage.jsx";
 
 const router = createBrowserRouter([
@@ -41,6 +44,14 @@ const router = createBrowserRouter([
       {
         path: "BookingTrain",
         element: <BookingTrain />,
+      },
+      {
+        path: "MyBooking",
+        element: <DatChoCuaToi />,
+      },
+      {
+        path: "MyBooking/MyHistoryBooking",
+        element: <LichSuDatCho />,
       },
     ],
   },
