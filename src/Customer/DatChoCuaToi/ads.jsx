@@ -1,6 +1,6 @@
  function ads() {
     return ( 
-        <div className="flex justify-between items-center w-full h-[180px] bg-[#00266B] mb-10 py-[24px] px-[40px] rounded-lg mb-4">
+        <div className="flex justify-between items-center w-full h-[180px] bg-[#00266B] py-[24px] px-[40px] rounded-lg mb-4">
                     <div className="text-white">
                         <div className="">
                             <div className="text-4xl font-bold">easy</div>
