@@ -18,14 +18,7 @@ const SignUp = () => {
     setError("");
     setSuccess("");
 
-    if (
-      !username ||
-      !firstName ||
-      !lastName ||
-      !email ||
-      !password ||
-      !confirmPassword
-    ) {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
       setError("Vui lòng điền đầy đủ thông tin.");
       return;
     }

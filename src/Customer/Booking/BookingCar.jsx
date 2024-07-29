@@ -157,16 +157,53 @@ const BookingCar = () => {
       );
 
       const data = await res.json();
-      console.log("Phản hồi từ server:", data);
+      console.log("Phản hồi từ server đặt xe:", data);
 
       if (res.ok) {
-        alert("Đặt xe thành công");
-        navigate("/");
+        if (!data._id) {
+          alert("Không tìm thấy ID đơn hàng trong phản hồi");
+          return;
+        }
+
+        try {
+          const resVoucher = await fetch(
+            "https://voucher-server-alpha.vercel.app/api/vouchers/createPartNerRequest",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                OrderID: data._id,
+                PartnerID: "60c9c5d9c5f9c40015f6f7b6",
+                ServiceName: "Đặt xe ô tô",
+                TotalMoney: bookingCar.ThanhTien,
+                CustomerCode: "KH01",
+                Description: `Dịch vụ đặt xe ô tô từ ${SanBay} đến ${tram?.DiaChi}`,
+                LinkHome:
+                  "https://cnpm-fe-thanh-b1c064a3f59c.herokuapp.com/MainHome",
+                LinkReturnSuccess: `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateState/${data._id}`,
+              }),
+            }
+          );
+
+          const voucherData = await resVoucher.json();
+          console.log("Phản hồi từ server tạo yêu cầu đối tác:", voucherData);
+
+          if (resVoucher.ok) {
+            window.location.href = `http://localhost:5174/?OrderID=${data._id}`;
+          } else {
+            alert(voucherData.error || "Đã xảy ra lỗi khi truyền dữ liệu");
+          }
+        } catch (error) {
+          console.error("Lỗi khi truyền dữ liệu:", error);
+          alert("Không thể truyền dữ liệu");
+        }
       } else {
         alert(data.error || "Đã xảy ra lỗi khi đặt xe");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Lỗi khi kết nối tới máy chủ:", error);
       alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
     }
   };

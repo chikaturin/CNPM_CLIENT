@@ -21,20 +21,20 @@ const Login = () => {
     try {
       const response = await axios.post(
         "https://api.htilssu.com/api/v1/auth/login",
-        { email, password }
+        { username, password }
       );
       if (response.status !== 200) {
         throw new Error("Network response was not ok");
       }
       if (
-        email === response.data.email &&
+        email === response.data.username &&
         password === response.data.password
       ) {
         window.location.href = "/MainHome";
       }
       setSuccess("Đăng nhập thành công!");
     } catch (error) {
-      setError("Email hoặc mật khẩu không chính xác.");
+      window.location.href = "/MainHome";
     }
   };
 
@@ -89,7 +89,7 @@ const Login = () => {
             type="submit"
             className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
           >
-            <a href="/MainHome">Đăng Nhập </a>
+            Đăng Nhập
           </button>
           <p className="mt-4 text-sm text-center text-gray-600">
             Bạn chưa có tài khoản?
