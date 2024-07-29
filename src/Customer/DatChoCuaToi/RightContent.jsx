@@ -2,7 +2,7 @@ import listIcon from "../../assets/user-booking-ic.svg";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Ads from "./ads";
 function RightContent() {
   const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
   const [lichSuCar, setLichSuCar] = useState([]);
@@ -91,7 +91,9 @@ function RightContent() {
   }
   return (
     <div className="w-[70%] mt-10 h-[600px] overflow-y-auto">
-      <div className=" w-full shadow bg-[#EDEDED] rounded-lg mb-8">
+      
+      <Ads />
+      {/* <div className=" w-full shadow bg-[#EDEDED] rounded-lg mb-8">
         <div className="inline-flex items-center p-4">
           <div className="mr-4">
             <img
@@ -107,8 +109,9 @@ function RightContent() {
             </a>
           </div>
         </div>
-      </div>
-      <h2 className="font-bold text-2xl">Đặt chỗ của bạn</h2>
+      </div> */}
+
+      <h2 className="font-bold text-2xl">Vé điện tử & Phiếu thanh toán hiện hành</h2>
       <div></div>
       {filteredLichSuCar.map((item) => (
         <div key={item._id} className="w-full shadow bg-[#EDEDED] rounded-lg">
@@ -120,9 +123,10 @@ function RightContent() {
               <p>Mã đặt chỗ Xe của traveloki</p>
               <p className="ml-1 font-bold ">{item.MaDX}</p>
             </div>
+            <hr className="my-4 border-t-2 border-slate-300 w-full" />
             <div className="flex">
-              <div className="bg-blue-500 text-white rounded-full my-1 p-1">Trạng thái thanh toán</div>
-              <div className="ml-auto font-semibold text-blue-600 cursor-pointer hover:text-blue-800" onClick={() => handleSubmitCar(item.MaDX,item._id)}>
+              <div className="bg-blue-900 text-white rounded-full my-1 py-1 px-4">Trạng thái thanh toán</div>
+              <div className="ml-auto font-semibold text-blue-800 cursor-pointer hover:text-blue-800" onClick={() => handleSubmitCar(item.MaDX,item._id)}>
                 Xem chi tiết
               </div>
             </div>
@@ -139,8 +143,9 @@ function RightContent() {
               <p>Mã đặt chỗ Tàu của traveloki</p>
               <p className="ml-1 font-bold ">{item.MaDX}</p>
             </div>
+            <hr className="my-4 border-t-2 border-slate-300 w-full" />
             <div className="flex">
-              <div className="bg-blue-500 text-white rounded-full my-1 p-1">Trạng thái thanh toán</div>
+              <div className="bg-blue-900 text-white rounded-full my-1 py-1 px-4">Trạng thái thanh toán</div>
               <div className="ml-auto font-semibold text-blue-600 cursor-pointer hover:text-blue-800" onClick={() => handleSubmitTau(item.MaDX,item._id)}>
                 Xem chi tiết
               </div>
@@ -158,8 +163,9 @@ function RightContent() {
               <p>Mã đặt chỗ Bus của traveloki</p>
               <p className="ml-1 font-bold ">{item.MaDX}</p>
             </div>
+            <hr className="my-4 border-t-2 border-slate-300 w-full" />
             <div className="flex">
-              <div className="bg-blue-500 text-white rounded-full my-1 p-1">Trạng thái thanh toán</div>
+              <div className="bg-blue-900 text-white rounded-full my-1 py-1 px-4">Trạng thái thanh toán</div>
               <div className="ml-auto font-semibold text-blue-600 cursor-pointer hover:text-blue-800" onClick={() => handleSubmitBus(item.MaDX,item._id)}>
                 Xem chi tiết
               </div>
