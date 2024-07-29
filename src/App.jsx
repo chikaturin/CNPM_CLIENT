@@ -7,11 +7,14 @@ const App = () => {
   const isBookingCar = location.pathname === "/BookingCar";
   const isBookingBus = location.pathname === "/BookingBus";
   const isBookingTrain = location.pathname === "/BookingTrain";
+  const isCancelTicketTrain = location.pathname === "/CancelTicketTau";
+  const isCancelTicketBus = location.pathname === "/CancelTicketBus";
+  const isCancelTicketCar = location.pathname === "/CancelTicket";
   const isBookingPage = isBookingCar || isBookingBus || isBookingTrain;
 
   return (
     <div className="bg-[#F2F3F3]">
-      {isBookingPage ? (
+      {(isBookingPage || isCancelTicketCar || isCancelTicketTrain || isCancelTicketBus)? (
         <div className="w-full">
           <Header />
           <div className="w-full h-screen bg-opacity-20 flex justify-center bg-slate-400">

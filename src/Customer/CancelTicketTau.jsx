@@ -3,28 +3,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { parse, format, differenceInMinutes, differenceInHours, differenceInMilliseconds, isSameDay } from "date-fns";
+import { parse, format, differenceInMilliseconds, isSameDay } from "date-fns";
 
 import {
-  faUser,
-  faBagShopping,
-  faCaretDown,
-  faCaretUp,
   faPlaneArrival,
   faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 
-const CancelTicket = () => {
+const CancelTicketBus = () => {
   const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const MaDX = searchParams.get("MaDX");
-  const historyCarId = searchParams.get("id");
+  const historyTauId = searchParams.get("id");
   const today = new Date().toISOString().slice(0, 16);
-  const [detailBookingCar, setDetailBookingCar] = useState([]);
-  const [detailCar, setDetailCar] = useState([]);
-  const [show, setShow] = useState(false);
-  const [bookingId, setBookingId] = useState(null); // state để lưu id
+  const [detailBookingTau, setDetailBookingTau] = useState([]);
+  const [detailTau, setDetailTau] = useState([]);
+  const [maVeTau, setMaVeTau] = useState(null); 
+  const [bookingId, setBookingId] = useState(null);// state để lưu id
   const [newNgayGioDat, setNewNgayGioDat] = useState("");
 
   // getDetailTicket && getDetailCar
@@ -32,16 +28,18 @@ const CancelTicket = () => {
     //get detail ticket
     const getDatXeMaDX = async () => {
       try {
-        const res = await axios.get(`${url}/FindBookingCarMaDX?MaDX=${MaDX}`);
+        const res = await axios.get(`${url}/FindBuyTicketTrainMaDX/${MaDX}`);
         console.log(res.data);
-        setDetailBookingCar(res.data.datXes);
+        setDetailBookingTau(res.data.buyTicketTrain);
 
         // Giả sử chỉ có một đối tượng trong mảng datXes
-        const MaDetailCar = res.data.datXes[0]?.MaDetailCar;
-        const id = res.data.datXes[0]?._id; // Lấy id từ response
-        setBookingId(id); // Lưu id vào state
-        if (MaDetailCar) {
-          await getDetailCar(MaDetailCar);
+        const MaDetailTau = res.data.buyTicketTrain?.MaPT;
+        const MaVeTau = res.data.buyTicketTrain?.MaVeTau;
+        const id = res.data.buyTicketTrain?._id;  // Lấy id từ response
+        setMaVeTau(MaVeTau);
+        setBookingId(id) // Lưu id vào state
+        if (MaDetailTau) {
+          await getDetailTau(MaDetailTau);
         }
       } catch (error) {
         console.error(
@@ -53,11 +51,11 @@ const CancelTicket = () => {
     };
 
     //get detail ticket
-    const getDetailCar = async (MaDetailCar) => {
+    const getDetailTau = async (MaDetailTau) => {
       try {
-        const res = await axios.get(`${url}/GetDetailCarID/${MaDetailCar}`);
-        console.log("Detail Car:", res.data);
-        setDetailCar(res.data);
+        const res = await axios.get(`${url}/GetPhuongTienID/${MaDetailTau}`);
+        console.log("Detail Tau:", res.data);
+        setDetailTau(res.data.phuongTien);
       } catch (error) {
         console.error(
           "Request failed with status code",
@@ -72,14 +70,10 @@ const CancelTicket = () => {
     }
   }, [MaDX]);
 
-  const handleClick = () => {
-    setShow((prevShow) => !prevShow);
-  };
-
   //định dạng ngày giờ
   const formatDate = (dateString) => {
     try {
-      const parsedDate = parse(dateString, "yyyy-MM-dd-HH:mm", new Date());
+      const parsedDate = parse(dateString, "yyyy-MM-dd'T'HH:mm:ss.SSSX", new Date());
       return format(parsedDate, "dd/MM/yyyy HH:m a");
     } catch (error) {
       console.error("Invalid Date:", dateString);
@@ -90,7 +84,7 @@ const CancelTicket = () => {
   // kiểm tra giờ hợp lệ để hủy vé
   const canCancelTicket = () => {
     const currentTime = new Date();
-    const bookingTime = new Date(detailBookingCar[0]?.NgayGioDat);
+    const bookingTime = new Date(detailBookingTau?.NgayGioKhoiHanh);
    // Kiểm tra nếu thời gian chuẩn bị đi còn ít hơn 1 tiếng và cùng ngày
    const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
    if (isSameDay(currentTime, bookingTime) && differenceInMinutes < 60) {
@@ -103,7 +97,7 @@ const CancelTicket = () => {
    // Hàm kiểm tra thời gian đổi lịch
    const canChangeBooking = () => {
     const currentTime = new Date();
-    const bookingTime = new Date(detailBookingCar[0]?.NgayGioDat);
+    const bookingTime = new Date(detailBookingTau?.NgayGioKhoiHanh);
     // Kiểm tra nếu thời gian chuẩn bị đi còn ít hơn 2 tiếng mà cùng ngày thì không cho đổi
     const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
     if (isSameDay(currentTime, bookingTime) && differenceInMinutes < 120) {
@@ -120,7 +114,7 @@ const CancelTicket = () => {
     } else {
       // Thực hiện logic hủy vé ở đây
       try {
-        const response = await axios.delete(`${url}/CancelBooking/${MaDX}`);
+        const response = await axios.delete(`${url}/CancelTicketTrain/${maVeTau}`);
         
         if (response.status === 200) {
           alert("Hủy vé thành công.");
@@ -141,8 +135,8 @@ const CancelTicket = () => {
       alert("Không thể đổi lịch vì thời gian chuẩn bị đi còn ít hơn 4 tiếng.");
     } else {
     try {
-      console.log("id:", bookingId);
-      const response = await axios.put(`${url}/BookingCar/SchedularChange/${bookingId}`, {
+      
+      const response = await axios.put(`${url}/SchedularChange/${bookingId}`, {
         NgayGioDat: newNgayGioDat,
       });
       const { message } = response.data;
@@ -158,75 +152,26 @@ const CancelTicket = () => {
     }
     }
   };
-
+  useEffect(() => {
+    if (detailTau) {
+      console.log("DetailTau state updated:", detailTau);
+    }
+  }, [detailTau]);
   return (
     <div className="p-4 w-full h-full pb-28 overflow-y-auto">
       <span className="bg-white w-[96%] p-2 -top-0 absolute font-bold text-xl">
         <span className="font-extrabold text-green-500 px-4">
-          {detailBookingCar[0]?.DiemSanBay}
+          {detailBookingTau?.DiemDon}
         </span>
         -
         <span className="font-extrabold text-green-500 px-4">
-          {detailBookingCar[0]?.DiemDon_Tra}
+          {detailBookingTau?.DiemTra}
         </span>
       </span>
       <div className="w-full mt-8">
         <div className="flex text-gray-500">
-          <span>
-            <FontAwesomeIcon icon={faUser} />
-            <span className="ml-2">{detailCar?.SoGheToiDa} passenger(s)</span>
-          </span>
-          <span className="ml-3">
-            <FontAwesomeIcon icon={faBagShopping} />
-            <span className="ml-2">{detailCar?.SoHanhLyToiDa} baggage(s)</span>
-          </span>
+        {detailTau?.TenCty}
         </div>
-        <div className="w-full text-right font-bold cursor-pointer">
-          <span onClick={handleClick} className="ml-3 text-blue-500">
-            <FontAwesomeIcon icon={show ? faCaretUp : faCaretDown} />
-            <span className="ml-1"> Car Detail</span>
-          </span>
-        </div>
-        {show && (
-          <div className="mt-2">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-green-400">
-                  <th className="border px-4 py-2">Tên hãng xe</th>
-                  <th className="border px-4 py-2">Tên chủ sở hữu</th>
-                  <th className="border px-4 py-2">Biển số xe</th>
-                  <th className="border px-4 py-2">Số hành lý tối đa</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="text-black">
-                  <td className="border px-4 py-2">{detailCar?.TenHangXe}</td>
-                  <td className="border px-4 py-2">{detailCar?.TenChuSoHuu}</td>
-                  <td className="border px-4 py-2">{detailCar?.BienSoXe}</td>
-                  <td className="border px-4 py-2">
-                    {detailCar?.SoHanhLyToiDa}
-                  </td>
-                </tr>
-              </tbody>
-              <thead>
-                <tr className="bg-green-400">
-                  <th className="border px-4 py-2">Công ty</th>
-                  <th className="border px-4 py-2">Số ghế tối đa</th>
-                  <th className="border px-4 py-2">Số tiền/km</th>
-                  <th className="border px-4 py-2">Mã Sân Bay</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="text-black">
-                  <td className="border px-4 py-2">{detailCar?.CongTy}</td>
-                  <td className="border px-4 py-2">{detailCar?.SoGheToiDa}</td>
-                  <td className="border px-4 py-2">{detailCar?.SoTien_1km}</td>
-                  <td className="border px-4 py-2">{detailCar?.MaSB}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
       <div className="mt-2 bg-slate-100 p-4">
         <label className="font-bold">
@@ -237,13 +182,13 @@ const CancelTicket = () => {
             <label className="font-bold">Sân bay</label>
             <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
               <FontAwesomeIcon icon={faPlaneArrival} />
-              <span className="ml-2">{detailBookingCar[0]?.DiemSanBay}</span>
+              <span className="ml-2">{detailBookingTau?.DiemDon}</span>
             </p>
             <label className="font-bold">Lịch đi</label>
             <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
               <FontAwesomeIcon icon={faCalendarDays} />
               <span className="ml-2">
-                {detailBookingCar[0]?.NgayGioDat}
+                {detailBookingTau?.NgayGioKhoiHanh}
               </span>
             </p>
             <label className="font-bold">Nhập lịch muốn đổi</label>
@@ -257,13 +202,12 @@ const CancelTicket = () => {
           </div>
 
           <div className="p-2">
-            <label className="font-bold">Mô tả cho tài xế</label>
+            <label className="font-bold">Tên phương tiện</label>
             <input
               className="border mt-2 mb-4 outline-none text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2 w-full"
               type="text"
-              placeholder="Nhập mô tả"
-              name="Description"
-              value={detailBookingCar[0]?.Description}
+              name="Tên Phương Tiện"
+              value={detailTau?.TenPhuongTien}
               disabled
             />
             <label className="font-bold">Số điện thoại</label>
@@ -282,7 +226,7 @@ const CancelTicket = () => {
         <div className="p-2 pl-8">
           <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
             <FontAwesomeIcon icon={faPlaneArrival} />
-            <span className="ml-2">{detailBookingCar[0]?.DiemDon_Tra}</span>
+            <span className="ml-2">{detailBookingTau?.DiemTra}</span>
           </p>
         </div>
       </div>
@@ -292,7 +236,7 @@ const CancelTicket = () => {
           <div className="text-center">
             <span
               className={
-                detailBookingCar[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "text-gray-300 font-bold"
                   : "text-red-600 font-bold"
               }
@@ -301,7 +245,7 @@ const CancelTicket = () => {
             </span>
             <span
               className={
-                detailBookingCar[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "text-gray-300"
                   : "text-red-600"
               }
@@ -310,14 +254,14 @@ const CancelTicket = () => {
             </span>
             <span
               className={`inline-block border-t-4 ${
-                detailBookingCar[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "border-gray-400"
                   : "border-red-600"
               } w-20 ml-1`}
             ></span>
             <span
               className={
-                detailBookingCar[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "text-blue-500"
                   : "text-red-500"
               }
@@ -326,14 +270,14 @@ const CancelTicket = () => {
             </span>
             <span
               className={`inline-block border-t-4 ${
-                detailBookingCar[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "border-blue-500"
                   : "border-gray-400"
               } w-20 mr-1`}
             ></span>
             <span
               className={
-                detailBookingCar[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "text-blue-500"
                   : "text-gray-300"
               }
@@ -342,7 +286,7 @@ const CancelTicket = () => {
             </span>
             <span
               className={
-                detailBookingCar[0]?.Trangthai
+                detailBookingTau?.Trangthai
                   ? "text-blue-500 font-bold"
                   : "text-gray-300 font-bold"
               }
@@ -355,7 +299,7 @@ const CancelTicket = () => {
           <div className="w-fit">
             <p className="text-gray-500 text-sm text-right">Tổng tiền xe</p>
             <span className="text-lg text-orange-400">
-              {detailBookingCar[0]?.ThanhTien} VND
+              {detailBookingTau?.ThanhTien} VND
             </span>
           </div>
           <button
@@ -377,4 +321,4 @@ const CancelTicket = () => {
   );
 };
 
-export default CancelTicket;
+export default CancelTicketBus;

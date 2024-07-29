@@ -9,6 +9,11 @@ import BookingTrain from "../Customer/Booking/BookingTrain.jsx";
 import Login from "../SingUp_Login/LogIn.jsx";
 import SignUp from "../SingUp_Login/SignUp.jsx";
 import ErrorPage from "./ErrorPage.jsx";
+import DatChoCuaToi from "../Customer/DatChoCuaToi/DatChoCuaToi.jsx";
+import LichSuDatCho from "../Customer/DatChoCuaToi/LichSuDatCho.jsx";
+import CancelTicket from "../Customer/CancelTicket.jsx";
+import CancelTicketTau from "../Customer/CancelTicketTau.jsx";
+import CancelTicketBus from "../Customer/CancelTicketBus.jsx";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +56,26 @@ const router = createBrowserRouter([
       {
         path: "BookingTrain",
         element: <BookingTrain />,
+      },
+      {
+        path: "/my-booking",
+        element: <DatChoCuaToi />,
+      },
+      {
+        path: "/my-booking/history-booking",
+        element: <LichSuDatCho />,
+      },
+      {
+        path: "CancelTicketBus",
+        element: <CancelTicketBus />,
+      },
+      {
+        path: "CancelTicketTau",
+        element: <CancelTicketTau />,
+      },
+      {
+        path: "CancelTicket",
+        element: <CancelTicket />,
       },
     ],
   },
