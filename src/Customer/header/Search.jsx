@@ -67,7 +67,7 @@ const SearchBar = () => {
       setSuggestions({ sanBays: [], tramDungs: [] });
     }
   };
-
+  
   const handleSubmit = async () => {
     if (!diemKhoiHanh || !diemKetThuc || !selectedDate || !selectedHour) {
       alert("Vui lòng nhập đầy đủ thông tin");

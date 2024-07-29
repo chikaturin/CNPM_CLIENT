@@ -1,31 +1,32 @@
-import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
-import Header from "./Customer/header/Header";
-import Footer from "./Customer/footer/Footer";
-const App = () => {
-  const location = useLocation();
-  const isBookingCar = location.pathname === "/BookingCar";
+  import React from "react";
+  import { Outlet, useLocation } from "react-router-dom";
+  import Header from "./Customer/header/Header";
+  import Footer from "./Customer/footer/Footer";
+  const App = () => {
+    const location = useLocation();
+    const isBookingCar = location.pathname === "/BookingCar";
+    const isCancelTicket = location.pathname === "/CancelTicket";
 
-  return (
-    <div className="bg-[#F2F3F3]">
-      {isBookingCar ? (
-        <div>
-          <Header />
-          <div className="w-full h-screen bg-opacity-20 flex justify-center bg-slate-400">
-            <div className="w-3/4 h-3/4 translate-y-1/4 bg-white rounded-md">
-              <Outlet />
+    return (
+      <div className="bg-[#F2F3F3]">
+        {(isBookingCar  || isCancelTicket)?  (
+          <div>
+            <Header />
+            <div className="w-full h-screen bg-opacity-20 flex justify-center bg-slate-400">
+              <div className="w-3/4 h-3/4 translate-y-1/4 bg-white rounded-md">
+                <Outlet />
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <>
-          <Header />
-          <Outlet />
-          <Footer />
-        </>
-      )}
-    </div>
-  );
-};
+        ) : (
+          <>
+            <Header />
+            <Outlet />
+            <Footer />
+          </>
+        )}
+      </div>
+    );
+  };
 
-export default App;
+  export default App;

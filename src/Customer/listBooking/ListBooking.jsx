@@ -31,7 +31,7 @@ const ListBooking = () => {
   const handleClick = (option) => {
     setSelected(option);
   };
-
+ 
   const fetchDetailCar = async () => {
     try {
       const res = await fetch(`${url}/FindDetailCarID?MaSB=${MaSB}`);
@@ -39,6 +39,7 @@ const ListBooking = () => {
         throw new Error("Network response was not ok");
       }
       const result = await res.json();
+      console.log(result);
       setDetailCar(result.detailCars || []);
     } catch (e) {
       console.error("Error fetching detail car:", e);

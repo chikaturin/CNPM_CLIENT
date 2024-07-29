@@ -18,6 +18,9 @@ import Admin from "../Admin.jsx";
 import MainHome from "../Customer/home/MainHome.jsx";
 import ListBooking from "../Customer/listBooking/ListBooking.jsx";
 import ErrorPage from "./ErrorPage.jsx";
+import DatChoCuaToi from "../Customer/DatChoCuaToi/DatChoCuaToi.jsx";
+import LichSuDatCho from "../Customer/DatChoCuaToi/LichSuDatCho.jsx";
+import CancelTicket from "../Customer/CancelTicket.jsx";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +99,18 @@ const router = createBrowserRouter([
       {
         path: "ListBooking",
         element: <ListBooking />,
+      },
+      {
+        path: "/my-booking",
+        element: <DatChoCuaToi />,
+      },
+      {
+        path: "/my-booking/history-booking",
+        element: <LichSuDatCho />,
+      },
+      {
+        path: "CancelTicket",
+        element: <CancelTicket />,
       },
     ],
   },
