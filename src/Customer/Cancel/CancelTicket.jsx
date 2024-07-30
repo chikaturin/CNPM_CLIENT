@@ -418,6 +418,14 @@ const CancelTicket = () => {
             >
               Đổi lịch
             </button>
+            <button
+            onClick={() => navigate('/RatingCar')}
+              className={`bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2 ${
+                detailCar[0]?.TrangThai ? "hidden" : "block"
+              }`}
+            >
+              Đánh giá
+            </button>
           </div>
         </div>
       </div>
