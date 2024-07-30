@@ -25,8 +25,8 @@ const BookingTrain = () => {
   const [bookingTrain, setBookingTrain] = useState({
     MaPT: id,
     MaTram: IDTram,
-    SLVeNguoiLon: count,
-    SLVeTreEm: counttreem,
+    SLVeNguoiLon: "",
+    SLVeTreEm: "",
     DiemDon: SanBay,
     DiemTra: "",
     NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
@@ -108,21 +108,12 @@ const BookingTrain = () => {
     e.preventDefault();
     console.log("Dữ liệu gửi đi:", bookingTrain);
 
-    const {
-      MaPT,
-      MaTram,
-      SLVeNguoiLon,
-      SLVeTreEm,
-      DiemDon,
-      DiemTra,
-      NgayGioKhoiHanh,
-      ThanhTien,
-    } = bookingTrain;
+    const { MaPT, MaTram, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } =
+      bookingTrain;
 
     if (
       !MaPT ||
       !MaTram ||
-      !SLVeNguoiLon ||
       !DiemDon ||
       !DiemTra ||
       !NgayGioKhoiHanh ||
@@ -136,8 +127,8 @@ const BookingTrain = () => {
     const requestData = {
       MaPT,
       MaTram,
-      SLVeNguoiLon,
-      SLVeTreEm,
+      SLVeNguoiLon: count,
+      SLVeTreEm: counttreem,
       DiemDon,
       DiemTra,
       NgayGioKhoiHanh: formattedDate,
@@ -160,6 +151,9 @@ const BookingTrain = () => {
       console.log("Phản hồi từ server:", data);
 
       if (res.ok) {
+        const buyTicketTrain = data.phieuDatTau;
+        console.log("Đã nhận được ID đơn hàng:", buyTicketTrain._id);
+
         try {
           const resVoucher = await fetch(
             "https://voucher-server-alpha.vercel.app/api/vouchers/createPartNerRequest",
@@ -169,7 +163,7 @@ const BookingTrain = () => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                OrderID: data._id,
+                OrderID: buyTicketTrain._id,
                 PartnerID: "60c9c5d9c5f9c40015f6f7b6",
                 ServiceName: "Mua vé tàu",
                 TotalMoney: ThanhTien,
@@ -177,7 +171,7 @@ const BookingTrain = () => {
                 Description: `Dịch vụ đặt vé tàu từ ${DiemDon} đến ${DiemTra}`,
                 LinkHome:
                   "https://cnpm-fe-thanh-b1c064a3f59c.herokuapp.com/MainHome",
-                LinkReturnSuccess: `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateState/${data._id}`,
+                LinkReturnSuccess: `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateState/${buyTicketTrain._id}`,
               }),
             }
           );
@@ -186,7 +180,7 @@ const BookingTrain = () => {
           console.log("Phản hồi từ server tạo yêu cầu đối tác:", voucherData);
 
           if (resVoucher.ok) {
-            window.location.href = `http://localhost:5174/?OrderID=${data._id}`;
+            window.location.href = `http://localhost:5174/?OrderID=${buyTicketTrain._id}`;
           } else {
             alert(voucherData.error || "Đã xảy ra lỗi khi truyền dữ liệu");
           }

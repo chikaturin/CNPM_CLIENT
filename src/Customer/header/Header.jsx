@@ -39,10 +39,12 @@ const Header = () => {
               <a href="#" className="hover:text-gray-300  flex items-center">
                 Hợp tác với chúng tôi
               </a>
-              <a href="#" className="hover:text-gray-300  flex items-center">
+              <a
+                href="/my-booking"
+                className="hover:text-gray-300  flex items-center"
+              >
                 Đặt chỗ của tôi
               </a>
-              s
               <a
                 href="#"
                 className="hover:text-gray-300 flex items-center space-x-2"

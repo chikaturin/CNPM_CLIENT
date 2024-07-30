@@ -12,7 +12,6 @@ import {
   faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 const BookingCar = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
   const Date = searchParams.get("Date");
@@ -120,6 +119,7 @@ const BookingCar = () => {
       Description,
     } = bookingCar;
 
+    // Kiểm tra dữ liệu đầu vào
     if (
       !Sdt ||
       !MaTram ||
@@ -135,6 +135,7 @@ const BookingCar = () => {
     }
 
     try {
+      // Gửi yêu cầu đến server
       const res = await fetch(
         "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/BookingCar",
         {
@@ -144,28 +145,28 @@ const BookingCar = () => {
           },
           body: JSON.stringify({
             MaDetailCar: id,
-            MaCus: bookingCar.Sdt,
-            MaTram: bookingCar.MaTram,
-            DiemSanBay: SanBay,
-            DiemDon_Tra: bookingCar.DiemDon_Tra,
-            NgayGioDat: bookingCar.NgayGioDat,
-            SoKm: bookingCar.SoKm,
-            ThanhTien: bookingCar.ThanhTien,
-            Description: bookingCar.Description,
+            Sdt,
+            MaTram,
+            DiemSanBay,
+            DiemDon_Tra,
+            NgayGioDat,
+            SoKm,
+            ThanhTien,
+            Description,
           }),
         }
       );
 
+      // Xử lý phản hồi từ server
       const data = await res.json();
       console.log("Phản hồi từ server đặt xe:", data);
 
       if (res.ok) {
-        if (!data._id) {
-          alert("Không tìm thấy ID đơn hàng trong phản hồi");
-          return;
-        }
+        const datXeOto = data; // Chỉnh sửa nếu cần thiết để phù hợp với cấu trúc dữ liệu trả về
+        console.log("Đã nhận được ID đơn hàng:", datXeOto._id);
 
         try {
+          // Gửi yêu cầu tạo voucher
           const resVoucher = await fetch(
             "https://voucher-server-alpha.vercel.app/api/vouchers/createPartNerRequest",
             {
@@ -174,15 +175,15 @@ const BookingCar = () => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                OrderID: data._id,
+                OrderID: datXeOto._id,
                 PartnerID: "60c9c5d9c5f9c40015f6f7b6",
                 ServiceName: "Đặt xe ô tô",
-                TotalMoney: bookingCar.ThanhTien,
+                TotalMoney: ThanhTien,
                 CustomerCode: "KH01",
-                Description: `Dịch vụ đặt xe ô tô từ ${SanBay} đến ${tram?.DiaChi}`,
+                Description: `Dịch vụ đặt xe ô tô từ ${DiemSanBay} đến ${tram?.DiaChi}`,
                 LinkHome:
                   "https://cnpm-fe-thanh-b1c064a3f59c.herokuapp.com/MainHome",
-                LinkReturnSuccess: `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateState/${data._id}`,
+                LinkReturnSuccess: `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateState/${datXeOto._id}`,
               }),
             }
           );
@@ -191,7 +192,8 @@ const BookingCar = () => {
           console.log("Phản hồi từ server tạo yêu cầu đối tác:", voucherData);
 
           if (resVoucher.ok) {
-            window.location.href = `http://localhost:5174/?OrderID=${data._id}`;
+            // Chuyển hướng sau khi thành công
+            window.location.href = `https://checkout-page-54281a5e23aa.herokuapp.com//?OrderID=${datXeOto._id}`;
           } else {
             alert(voucherData.error || "Đã xảy ra lỗi khi truyền dữ liệu");
           }

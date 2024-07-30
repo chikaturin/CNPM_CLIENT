@@ -8,7 +8,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const BookingBus = () => {
-  const navigate = useNavigate();
   const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
@@ -24,7 +23,7 @@ const BookingBus = () => {
   const [bookingBus, setBookingBus] = useState({
     MaPT: id,
     MaTram: IDTram,
-    SLVe: count,
+    SLVe: "",
     DiemDon: SanBay,
     DiemTra: "",
     NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
@@ -55,13 +54,6 @@ const BookingBus = () => {
 
   const fetchTram = async () => {
     try {
-      console.log("IDTram:", IDTram);
-      console.log("BookingBus parameters:", {
-        SanBay,
-        dateParam,
-        timeParam,
-        IDTram,
-      });
       const res = await fetch(`${url}/GetTramDungID/${IDTram}`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -98,13 +90,12 @@ const BookingBus = () => {
     e.preventDefault();
     console.log("Dữ liệu gửi đi:", bookingBus);
 
-    const { MaPT, MaTram, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } =
+    const { MaPT, MaTram, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } =
       bookingBus;
 
     if (
       !MaPT ||
       !MaTram ||
-      !SLVe ||
       !DiemDon ||
       !DiemTra ||
       !NgayGioKhoiHanh ||
@@ -125,7 +116,7 @@ const BookingBus = () => {
         body: JSON.stringify({
           MaPT,
           MaTram,
-          SLVe,
+          SLVe: count,
           DiemDon,
           DiemTra,
           NgayGioKhoiHanh: formattedDate,
@@ -138,7 +129,10 @@ const BookingBus = () => {
       console.log("Phản hồi từ server:", data);
 
       if (res.ok) {
-        if (!data._id) {
+        const buyTicketBus = data.buyTicketBus;
+        console.log("Đã nhận được ID đơn hàng:", buyTicketBus._id);
+
+        if (!buyTicketBus._id) {
           alert("Không tìm thấy ID đơn hàng trong phản hồi");
           return;
         }
@@ -152,7 +146,7 @@ const BookingBus = () => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                OrderID: data._id,
+                OrderID: buyTicketBus._id,
                 PartnerID: "60c9c5d9c5f9c40015f6f7b6",
                 ServiceName: "Mua vé xe Buýt",
                 TotalMoney: ThanhTien,
@@ -160,7 +154,7 @@ const BookingBus = () => {
                 Description: `Dịch vụ mua vé bus từ ${DiemDon} đến ${DiemTra}`,
                 LinkHome:
                   "https://cnpm-fe-thanh-b1c064a3f59c.herokuapp.com/MainHome",
-                LinkReturnSuccess: `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateState/${data._id}`,
+                LinkReturnSuccess: `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateState/${buyTicketBus._id}`,
               }),
             }
           );
@@ -169,7 +163,7 @@ const BookingBus = () => {
           console.log("Phản hồi từ server tạo yêu cầu đối tác:", voucherData);
 
           if (resVoucher.ok) {
-            window.location.href = `http://localhost:5174/?OrderID=${data._id}`;
+            window.location.href = `http://localhost:5174/?OrderID=${buyTicketBus._id}`;
           } else {
             alert(voucherData.error || "Đã xảy ra lỗi khi truyền dữ liệu");
           }

@@ -210,7 +210,7 @@ const SearchBar = () => {
                 />
               </div>
               {showAirportSuggestions && (
-                <ul className="w-1/4 p-2 top-[170px] bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
+                <ul className="w-1/4 p-2 top-56 bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
                   {suggestions.sanBays.map((sanBay, index) => (
                     <li
                       className=" hover:bg-blue-100 p-2 rounded-md border-b-gray-400 border-0 border-b-2 "
@@ -250,7 +250,7 @@ const SearchBar = () => {
                 />
               </div>
               {showTramDungSuggestions && (
-                <ul className="w-1/4 p-2 top-[170px] bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
+                <ul className="w-1/4 p-2 top-56 bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
                   {suggestions.tramDungs.map((suggestion, index) => (
                     <li
                       className=" hover:bg-blue-100 p-2 rounded-md border-b-gray-400 border-0 border-b-2 "
