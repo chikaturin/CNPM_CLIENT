@@ -31,7 +31,7 @@ function LeftNavBar() {
               </div>
               <div className="w-[60%] text-2xl font-bold">
                 <h1>
-                  {user ? `${user.firstName} ${user.lastName}` : "Người dùng"}
+                  {user ? `${user.firstName} ${user.lastName}` : "Nguyễn Quân"}
                 </h1>
               </div>
             </div>
