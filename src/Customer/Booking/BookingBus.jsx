@@ -163,7 +163,7 @@ const BookingBus = () => {
           console.log("Phản hồi từ server tạo yêu cầu đối tác:", voucherData);
 
           if (resVoucher.ok) {
-            window.location.href = `http://localhost:5174/?OrderID=${buyTicketBus._id}`;
+            window.location.href = `https://checkout-page-54281a5e23aa.herokuapp.com/?OrderID=${buyTicketBus._id}`;
           } else {
             alert(voucherData.error || "Đã xảy ra lỗi khi truyền dữ liệu");
           }
