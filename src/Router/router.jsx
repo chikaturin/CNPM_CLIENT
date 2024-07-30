@@ -18,6 +18,8 @@ import { RatingCar } from "../Customer/Rating/RatingCar.jsx";
 import { RatingTau } from "../Customer/Rating/RatingTau.jsx";
 import { RatingBus } from "../Customer/Rating/RatingBus.jsx";
 
+// import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx"; 
+
 const router = createBrowserRouter([
   {
     path: "/",

@@ -4,7 +4,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 export const StarRating = ({ rating, setRating }) => {
   return (
-    <div className="flex space-x-1">
+    <div className="flex space-x-1 justify-center">
       {[1, 2, 3, 4, 5].map((star) => (
         <FontAwesomeIcon
           key={star}

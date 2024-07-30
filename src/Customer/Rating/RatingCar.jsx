@@ -12,8 +12,8 @@ export const RatingCar = () => {
     };
   
     return (
-      <div className="max-w-md mx-auto mt-10">
-        <h2 className="text-2xl font-bold text-center mb-4">Star Ratings in React</h2>
+      <div className="max-w-md mx-auto mt-10 h-[50rem] translate-y-[30%]">
+        <h2 className="text-2xl font-bold text-center mb-4">Star Ratings Car in React</h2>
         <StarRating rating={rating} setRating={setRating} />
         <form onSubmit={handleSubmit} className="mt-4">
           <textarea
