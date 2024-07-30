@@ -12,25 +12,44 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setIsLoading(true);
 
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
       setError("Vui lòng điền đầy đủ thông tin.");
+      setIsLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
       setError("Mật khẩu và xác nhận mật khẩu không khớp.");
+      setIsLoading(false);
+      return;
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Địa chỉ email không hợp lệ.");
+      setIsLoading(false);
+      return;
+    }
+
+    // Password strength validation
+    if (password.length < 6) {
+      setError("Mật khẩu phải có ít nhất 6 ký tự.");
+      setIsLoading(false);
       return;
     }
 
     try {
       const response = await axios.post(
-        "https://api.htilssu.com/api/v1/auth//register ",
+        "https://api.htilssu.com/api/v1/auth/register",
         {
           firstName,
           lastName,
@@ -41,23 +60,27 @@ const SignUp = () => {
         },
         {
           headers: {
-            Authorization: `Bearer YOUR_API_TOKEN`, // Replace YOUR_API_TOKEN with the actual token
+            Authorization: `Bearer YOUR_API_TOKEN`,
           },
         }
       );
-      if (response.status !== 200) {
+
+      if (response.status === 200) {
+        setSuccess("Đăng ký thành công!");
+        window.location.href = "/MainHome";
+      } else {
         throw new Error("Network response was not ok");
       }
-      setSuccess("Đăng ký thành công!");
-      window.location.href = "/MainHome";
     } catch (e) {
       setError("Có lỗi xảy ra trong quá trình đăng ký. Vui lòng thử lại.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div
-      className="flex items-center justify-center py-9 min-h-screen bg-center bg-cover "
+      className="flex items-center justify-center py-9 min-h-screen bg-center bg-cover"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1441260038675-7329ab4cc264?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8N3w4N3x8ZW58MHx8fHx8')",
@@ -170,8 +193,9 @@ const SignUp = () => {
           <button
             type="submit"
             className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+            disabled={isLoading}
           >
-            Đăng Ký
+            {isLoading ? "Đang đăng ký..." : "Đăng Ký"}
           </button>
           <p className="mt-4 text-sm text-center text-gray-600">
             Bạn đã có tài khoản?

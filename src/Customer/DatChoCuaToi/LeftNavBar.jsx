@@ -1,4 +1,6 @@
 import Avatar from "../../assets/NiceService.png";
+import React, { useContext } from "react";
+import { UserContext } from "../../Router/UserContext";
 import listIcon from "../../assets/user-booking-ic.svg";
 import OnButtonIcon from "../../assets/On_button.svg";
 import HistoryBookingIcon from "../../assets/history-booking-ic.svg";
@@ -10,6 +12,7 @@ function handleClick(event, to) {
 }
 
 function LeftNavBar() {
+  const { user, logout } = useContext(UserContext);
   return (
     <div className="w-[40%] mt-10 mr-[24px]">
       <div className="bg-[#EDEDED] border-2 rounded-lg shadow border-slate-400">
@@ -24,7 +27,7 @@ function LeftNavBar() {
                 />
               </div>
               <div className="w-[60%] text-2xl font-bold">
-                <h1>Quân Nguyễn</h1>
+                <h1>Quân</h1>
               </div>
             </div>
           </div>
@@ -75,7 +78,7 @@ function LeftNavBar() {
                   className="w-[32px] h-[32px] rounded-full"
                 />
               </div>
-              <div className="text-lg font-semibold">Đăng xuất</div>
+              <button className="text-lg font-semibold">Đăng xuất</button>
             </div>
           </div>
         </div>
