@@ -1,18 +1,21 @@
-import Avatar from "../../assets/NiceService.png";
 import React, { useContext } from "react";
-import { UserContext } from "../../Router/UserContext";
+import Avatar from "../../assets/NiceService.png";
 import listIcon from "../../assets/user-booking-ic.svg";
 import OnButtonIcon from "../../assets/On_button.svg";
 import HistoryBookingIcon from "../../assets/history-booking-ic.svg";
-import { Link } from "react-router-dom";
-
-function handleClick(event, to) {
-  event.preventDefault();
-  window.location.href = to;
-}
+import { UserContext } from "../../Router/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function LeftNavBar() {
   const { user, logout } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    logout();
+    navigate("/login");
+  };
+
   return (
     <div className="w-[40%] mt-10 mr-[24px]">
       <div className="bg-[#EDEDED] border-2 rounded-lg shadow border-slate-400">
@@ -27,7 +30,9 @@ function LeftNavBar() {
                 />
               </div>
               <div className="w-[60%] text-2xl font-bold">
-                <h1>Quân</h1>
+                <h1>
+                  {user ? `${user.firstName} ${user.lastName}` : "Người dùng"}
+                </h1>
               </div>
             </div>
           </div>
@@ -37,13 +42,13 @@ function LeftNavBar() {
               <div className="mr-2">
                 <img
                   src={listIcon}
-                  alt="Avatar"
+                  alt="User Booking"
                   className="w-[32px] h-[32px] rounded-full"
                 />
               </div>
               <div
-                onClick={(event) => handleClick(event, "/my-booking")}
-                className="text-lg font-semibold"
+                onClick={() => navigate("/my-booking")}
+                className="text-lg font-semibold cursor-pointer"
               >
                 Đặt chỗ của tôi
               </div>
@@ -52,7 +57,7 @@ function LeftNavBar() {
           <a
             href="/my-booking/history-booking"
             onClick={(event) =>
-              handleClick(event, "/my-booking/history-booking")
+              event.preventDefault() || navigate("/my-booking/history-booking")
             }
           >
             <div className="w-full hover:bg-slate-100">
@@ -60,7 +65,7 @@ function LeftNavBar() {
                 <div className="mr-2">
                   <img
                     src={HistoryBookingIcon}
-                    alt="history icon"
+                    alt="History Booking"
                     className="w-[32px] h-[32px] rounded-full"
                   />
                 </div>
@@ -78,7 +83,9 @@ function LeftNavBar() {
                   className="w-[32px] h-[32px] rounded-full"
                 />
               </div>
-              <button className="text-lg font-semibold">Đăng xuất</button>
+              <button className="text-lg font-semibold" onClick={handleLogout}>
+                Đăng xuất
+              </button>
             </div>
           </div>
         </div>
