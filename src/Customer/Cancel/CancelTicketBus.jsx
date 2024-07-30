@@ -143,16 +143,36 @@ const CancelTicket = () => {
       alert("Không thể hủy vé vì thời gian chuẩn bị đi còn ít hơn 1 tiếng.");
     } else {
       try {
-        const response = await axios.delete(`${url}/CancelBookingBus/${MaDX}`);
-        if (response.status === 200) {
-          alert("Hủy vé thành công.");
-          navigate("/my-booking");
+        const refundResponse = await axios.post(
+          "https://api.htilssu.com/api/v1/refund",
+          {
+            orderId: detailBookingBus?._id,
+          }
+        );
+
+        if (refundResponse.status === 200) {
+          alert("Hoàn tiền thành công.");
+
+          try {
+            const cancelResponse = await axios.delete(
+              `${url}/CancelBookingBus/${MaDX}`
+            );
+            if (cancelResponse.status === 200) {
+              alert("Hủy vé thành công.");
+              navigate("/my-booking");
+            } else {
+              alert("Có lỗi xảy ra khi hủy vé đặt xe.");
+            }
+          } catch (cancelError) {
+            console.error("Error cancelling ticket: ", cancelError);
+            alert("Có lỗi xảy ra khi hủy vé.");
+          }
         } else {
-          alert("Có lỗi xảy ra khi hủy vé đặt xe.");
+          alert("Có lỗi xảy ra khi xử lý hoàn tiền.");
         }
-      } catch (error) {
-        console.error("Error cancelling ticket: ", error);
-        alert("Có lỗi xảy ra khi hủy vé.");
+      } catch (refundError) {
+        console.error("Error processing refund: ", refundError);
+        alert("Có lỗi xảy ra khi xử lý hoàn tiền.");
       }
     }
   };
@@ -330,7 +350,7 @@ const CancelTicket = () => {
             <button
               onClick={handleCancel}
               className={`bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2 ${
-                detailBookingBus?.TrangThai ? "hidden" : "block"
+                detailBookingBus?.TrangThai ? "block" : "hidden"
               }`}
             >
               Hủy vé
@@ -338,7 +358,7 @@ const CancelTicket = () => {
             <button
               onClick={handleChangeBooking}
               className={`bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2 ${
-                detailBookingBus?.TrangThai ? "hidden" : "block"
+                detailBookingBus?.TrangThai ? "block" : "hidden"
               }`}
             >
               Đổi lịch

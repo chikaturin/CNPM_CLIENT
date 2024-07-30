@@ -85,7 +85,6 @@ const CancelTicket = () => {
     if (isSameDay(currentTime, bookingTime) && differenceInMinutes < 60) {
       return false;
     }
-
     return true;
   };
 
@@ -120,19 +119,37 @@ const CancelTicket = () => {
     if (!canCancelTicket()) {
       alert("Không thể hủy vé vì thời gian chuẩn bị đi còn ít hơn 1 tiếng.");
     } else {
-      // Thực hiện logic hủy vé ở đây
       try {
-        const response = await axios.delete(`${url}/CancelBooking/${MaDX}`);
+        const refundResponse = await axios.post(
+          "https://api.htilssu.com/api/v1/refund",
+          {
+            orderId: detailBookingCar[0]?._id,
+          }
+        );
 
-        if (response.status === 200) {
-          alert("Hủy vé thành công.");
-          navigate("/my-booking");
+        if (refundResponse.status === 200) {
+          alert("Hoàn tiền thành công.");
+
+          try {
+            const cancelResponse = await axios.delete(
+              `${url}/CancelBooking/${MaDX}`
+            );
+            if (cancelResponse.status === 200) {
+              alert("Hủy vé thành công.");
+              navigate("/my-booking");
+            } else {
+              alert("Có lỗi xảy ra khi hủy vé đặt xe.");
+            }
+          } catch (cancelError) {
+            console.error("Error cancelling ticket: ", cancelError);
+            alert("Có lỗi xảy ra khi hủy vé.");
+          }
         } else {
-          alert("Có lỗi xảy ra khi hủy vé đặt xe.");
+          alert("Có lỗi xảy ra khi xử lý hoàn tiền.");
         }
-      } catch (error) {
-        console.error("Error cancelling ticket: ", error);
-        alert("Có lỗi xảy ra khi hủy vé.");
+      } catch (refundError) {
+        console.error("Error processing refund: ", refundError);
+        alert("Có lỗi xảy ra khi xử lý hoàn tiền.");
       }
     }
   };

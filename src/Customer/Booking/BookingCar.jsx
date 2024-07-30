@@ -193,7 +193,7 @@ const BookingCar = () => {
 
           if (resVoucher.ok) {
             // Chuyển hướng sau khi thành công
-            window.location.href = `https://checkout-page-54281a5e23aa.herokuapp.com//?OrderID=${datXeOto._id}`;
+            window.location.href = `https://checkout-page-54281a5e23aa.herokuapp.com/?OrderID=${datXeOto._id}`;
           } else {
             alert(voucherData.error || "Đã xảy ra lỗi khi truyền dữ liệu");
           }

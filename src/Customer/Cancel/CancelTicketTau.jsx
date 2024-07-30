@@ -17,8 +17,8 @@ const CancelTicketTrain = () => {
   const [searchParams] = useSearchParams();
   const MaDX = searchParams.get("MaDX");
   const today = new Date().toISOString().slice(0, 16);
-  const [detailBookingBus, setDetailBookingBus] = useState(null);
-  const [detailBus, setDetailBus] = useState({});
+  const [detailBookingTrain, setDetailBookingTrain] = useState(null);
+  const [detailTrain, setDetailTrain] = useState({});
   const [show, setShow] = useState(false);
   const [phuongtien, setPhuongTien] = useState(null);
   const [tram, setTram] = useState(null);
@@ -30,7 +30,7 @@ const CancelTicketTrain = () => {
       try {
         const res = await axios.get(`${url}/FindBuyTicketTrainMaDX/${MaDX}`);
         const buyTicketTrain = res.data.buyTicketTrain;
-        setDetailBookingBus(buyTicketTrain);
+        setDetailBookingTrain(buyTicketTrain);
 
         const id = buyTicketTrain._id;
         setBookingId(id);
@@ -50,7 +50,7 @@ const CancelTicketTrain = () => {
     const getDetailCar = async (MaDetailCar) => {
       try {
         const res = await axios.get(`${url}/GetPhuongTienID/${MaDetailCar}`);
-        setDetailBus(res.data);
+        setDetailTrain(res.data);
       } catch (error) {
         console.error(
           "Request failed with status code",
@@ -68,7 +68,7 @@ const CancelTicketTrain = () => {
   const fetchPhuongTien = async () => {
     try {
       const res = await fetch(
-        `${url}/GetPhuongTienID/${detailBookingBus?.MaPT}`
+        `${url}/GetPhuongTienID/${detailBookingTrain?.MaPT}`
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -83,7 +83,7 @@ const CancelTicketTrain = () => {
   const fetchTram = async () => {
     try {
       const res = await fetch(
-        `${url}/GetTramDungID/${detailBookingBus?.MaTram}`
+        `${url}/GetTramDungID/${detailBookingTrain?.MaTram}`
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -96,16 +96,16 @@ const CancelTicketTrain = () => {
   };
 
   useEffect(() => {
-    if (detailBookingBus?.MaPT) {
+    if (detailBookingTrain?.MaPT) {
       fetchPhuongTien();
     }
-  }, [detailBookingBus?.MaPT]);
+  }, [detailBookingTrain?.MaPT]);
 
   useEffect(() => {
-    if (detailBookingBus?.MaTram) {
+    if (detailBookingTrain?.MaTram) {
       fetchTram();
     }
-  }, [detailBookingBus?.MaTram]);
+  }, [detailBookingTrain?.MaTram]);
 
   const handleClick = () => {
     setShow((prevShow) => !prevShow);
@@ -113,7 +113,7 @@ const CancelTicketTrain = () => {
 
   const canCancelTicket = () => {
     const currentTime = new Date();
-    const bookingTime = new Date(detailBookingBus?.NgayGioDat);
+    const bookingTime = new Date(detailBookingTrain?.NgayGioDat);
     const minutesDifference = differenceInMinutes(currentTime, bookingTime);
     if (isSameDay(currentTime, bookingTime) && minutesDifference < 60) {
       return false;
@@ -123,7 +123,7 @@ const CancelTicketTrain = () => {
 
   const canChangeBooking = () => {
     const currentTime = new Date();
-    const bookingTime = new Date(detailBookingBus?.NgayGioDat);
+    const bookingTime = new Date(detailBookingTrain?.NgayGioDat);
     const minutesDifference = differenceInMinutes(currentTime, bookingTime);
     if (isSameDay(currentTime, bookingTime) && minutesDifference < 120) {
       return false;
@@ -147,16 +147,30 @@ const CancelTicketTrain = () => {
       alert("Không thể hủy vé vì thời gian chuẩn bị đi còn ít hơn 1 tiếng.");
     } else {
       try {
-        const response = await axios.delete(`${url}/CancelBookingBus/${MaDX}`);
-        if (response.status === 200) {
-          alert("Hủy vé thành công.");
-          navigate("/my-booking");
+        const refundResponse = await axios.post(
+          "https://api.htilssu.com/api/v1/refund",
+          {
+            orderId: detailBookingTrain?._id,
+          }
+        );
+
+        if (refundResponse.status === 200) {
+          const cancelResponse = await axios.delete(
+            `${url}/CancelBookingBus/${MaDX}`
+          );
+
+          if (cancelResponse.status === 200) {
+            alert("Hủy vé thành công.");
+            navigate("/my-booking");
+          } else {
+            alert("Có lỗi xảy ra khi hủy vé đặt xe.");
+          }
         } else {
-          alert("Có lỗi xảy ra khi hủy vé đặt xe.");
+          alert("Có lỗi xảy ra khi xử lý hoàn tiền.");
         }
       } catch (error) {
-        console.error("Error cancelling ticket: ", error);
-        alert("Có lỗi xảy ra khi hủy vé.");
+        console.error("Error processing refund or cancelling ticket: ", error);
+        alert("Có lỗi xảy ra khi xử lý hoàn tiền.");
       }
     }
   };
@@ -172,7 +186,7 @@ const CancelTicketTrain = () => {
       } else {
         try {
           const response = await axios.put(
-            `${url}/BuyTicketBus/SchedularChange/${bookingId}`,
+            `${url}"BuyTicketTrain/SchedularChange/${bookingId}`,
             {
               NgayGioDat: newNgayGioDat.toString(),
             }
@@ -201,11 +215,11 @@ const CancelTicketTrain = () => {
       <div className="w-full h-full pb-28 overflow-y-auto">
         <div className="bg-white rounded-md py-4 w-full top-0 absolute font-bold text-xl">
           <span className="font-extrabold text-green-500 px-4">
-            {detailBookingBus?.DiemDon}
+            {detailBookingTrain?.DiemDon}
           </span>
           -
           <span className="font-extrabold text-green-500 px-4">
-            {detailBookingBus?.DiemTra}
+            {detailBookingTrain?.DiemTra}
           </span>
           <p className="pl-4 text-xl">Công ty: {phuongtien?.TenCty}</p>
         </div>
@@ -218,13 +232,13 @@ const CancelTicketTrain = () => {
               <label className="font-bold">Sân bay</label>
               <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
                 <FontAwesomeIcon icon={faPlaneArrival} />
-                <span className="ml-2">{detailBookingBus?.DiemDon}</span>
+                <span className="ml-2">{detailBookingTrain?.DiemDon}</span>
               </p>
               <label className="font-bold">Lịch đi</label>
               <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
                 <FontAwesomeIcon icon={faCalendarDays} />
                 <span className="ml-2">
-                  {formatDate(detailBookingBus?.NgayGioKhoiHanh)}
+                  {formatDate(detailBookingTrain?.NgayGioKhoiHanh)}
                 </span>
               </p>
               <label className="font-bold">Nhập lịch muốn đổi</label>
@@ -246,7 +260,7 @@ const CancelTicketTrain = () => {
                 <label className="font-bold">Số lượng vé người lớn </label>
                 <div className="grid border border-slate-300 bg-white rounded-md mt-2 ">
                   <span className="text-slate-500 p-2 h-full ">
-                    {detailBookingBus?.SLVeNguoiLon} vé
+                    {detailBookingTrain?.SLVeNguoiLon} vé
                   </span>{" "}
                 </div>
               </div>
@@ -254,7 +268,7 @@ const CancelTicketTrain = () => {
                 <label className="font-bold">Số lượng vé người lớn </label>
                 <div className="grid border border-slate-300 bg-white rounded-md mt-2 ">
                   <span className="text-slate-500 p-2 h-full ">
-                    {detailBookingBus?.SLVeTreEm} vé
+                    {detailBookingTrain?.SLVeTreEm} vé
                   </span>{" "}
                 </div>
               </div>
@@ -266,7 +280,7 @@ const CancelTicketTrain = () => {
           <div className="p-2 pl-8">
             <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
               <FontAwesomeIcon icon={faPlaneArrival} />
-              <span className="ml-2">{detailBookingBus?.DiemTra}</span>
+              <span className="ml-2">{detailBookingTrain?.DiemTra}</span>
             </p>
           </div>
         </div>
@@ -275,7 +289,7 @@ const CancelTicketTrain = () => {
             <div className="text-center flex items-center">
               <span
                 className={`${
-                  detailBookingBus?.TrangThai
+                  detailBookingTrain?.TrangThai
                     ? "text-gray-300 font-bold"
                     : "text-red-600 font-bold"
                 },px-4`}
@@ -285,35 +299,39 @@ const CancelTicketTrain = () => {
               <span
                 style={{ marginLeft: "10px" }}
                 className={
-                  detailBookingBus?.TrangThai ? "text-gray-300" : "text-red-600"
+                  detailBookingTrain?.TrangThai
+                    ? "text-gray-300"
+                    : "text-red-600"
                 }
               >
                 ●
               </span>
               <span
                 className={`inline-block border-t-4 ${
-                  detailBookingBus?.TrangThai
+                  detailBookingTrain?.TrangThai
                     ? "border-gray-400"
                     : "border-red-600"
                 } w-20 ml-1`}
               ></span>
               <span
                 className={
-                  detailBookingBus?.TrangThai ? "text-blue-500" : "text-red-500"
+                  detailBookingTrain?.TrangThai
+                    ? "text-blue-500"
+                    : "text-red-500"
                 }
               >
                 ●
               </span>
               <span
                 className={`inline-block border-t-4 ${
-                  detailBookingBus?.TrangThai
+                  detailBookingTrain?.TrangThai
                     ? "border-blue-500"
                     : "border-gray-400"
                 } w-20 mr-1`}
               ></span>
               <span
                 className={`${
-                  detailBookingBus?.TrangThai
+                  detailBookingTrain?.TrangThai
                     ? "text-blue-500 "
                     : "text-gray-300"
                 }`}
@@ -323,7 +341,7 @@ const CancelTicketTrain = () => {
               <span
                 style={{ marginLeft: "10px" }}
                 className={
-                  detailBookingBus?.TrangThai
+                  detailBookingTrain?.TrangThai
                     ? "text-blue-500 font-bold"
                     : "text-gray-300 font-bold"
                 }
@@ -336,13 +354,13 @@ const CancelTicketTrain = () => {
             <div className="w-fit">
               <p className="text-gray-500 text-sm text-right">Tổng tiền xe</p>
               <span className="text-lg text-orange-400">
-                {formatPrice(detailBookingBus?.ThanhTien)} VND
+                {formatPrice(detailBookingTrain?.ThanhTien)} VND
               </span>
             </div>
             <button
               onClick={handleCancel}
               className={`bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2 ${
-                detailBookingBus?.TrangThai ? "hidden" : "block"
+                detailBookingTrain?.TrangThai ? "block" : "hidden"
               }`}
             >
               Hủy vé
@@ -350,7 +368,7 @@ const CancelTicketTrain = () => {
             <button
               onClick={handleChangeBooking}
               className={`bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2 ${
-                detailBookingBus?.TrangThai ? "hidden" : "block"
+                detailBookingTrain?.TrangThai ? "block" : "hidden"
               }`}
             >
               Đổi lịch

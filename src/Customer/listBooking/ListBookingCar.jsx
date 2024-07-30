@@ -63,7 +63,7 @@ const ListBookingCar = () => {
           <div className="flex">
             <img
               src={item.Image}
-              className="w-auto h-44 rounded-s-lg"
+              className="w-1/3 h-44 rounded-s-lg"
               alt={item.TenHangXe}
             />
 

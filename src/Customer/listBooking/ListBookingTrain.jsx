@@ -129,7 +129,7 @@ const ListBookingBus = () => {
             <div className="flex">
               <img
                 src={item.image}
-                className="w-auto h-44 rounded-s-lg"
+                className="w-1/3 h-44 rounded-s-lg"
                 alt="Train"
               />
               <div className="grid w-full grid-cols-12 gap-4">

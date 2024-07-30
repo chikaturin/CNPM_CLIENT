@@ -1,10 +1,9 @@
-// src/components/Login.js
-import axios from "axios";
 import React, { useState } from "react";
+import axios from "axios";
 
-const Login = () => {
+const LoginCus = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setpassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -19,28 +18,31 @@ const Login = () => {
     }
 
     try {
+      const username = email;
       const response = await axios.post(
-        "https://api.htilssu.com/api/v1/auth/login",
+        `https://mern-tab-be.vercel.app/signUpCus/signInCus`,
         { username, password }
       );
-      if (response.status !== 200) {
-        throw new Error("Network response was not ok");
+      if (response.status === "OK" || response.status === 200) {
+        setSuccess("Đăng nhập thành công!");
+        localStorage.setItem("id", response.data.userID);
+        localStorage.setItem("authToken", response.data.access_token);
+
+        console.log(response.data.userID);
+        console.log(response.data.access_token);
+        window.location.href = "/homepage";
+      } else {
+        setError("Email hoặc mật khẩu không chính xác.");
       }
-      if (
-        email === response.data.username &&
-        password === response.data.password
-      ) {
-        window.location.href = "/MainHome";
-      }
-      setSuccess("Đăng nhập thành công!");
     } catch (error) {
-      window.location.href = "/MainHome";
+      console.log(error);
+      setError("Có lỗi xảy ra. Vui lòng thử lại.");
     }
   };
 
   return (
     <div
-      className="flex items-center justify-center min-h-screen bg-center bg-cover "
+      className="flex items-center justify-center min-h-screen bg-center bg-cover"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1441260038675-7329ab4cc264?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8N3w4N3x8ZW58MHx8fHx8')",
@@ -54,13 +56,10 @@ const Login = () => {
         )}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label className="block">
-              <span className=" after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                Email
-              </span>
+            <label className="block text-sm font-medium text-slate-700">
+              Email
               <input
                 type="email"
-                id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
@@ -70,15 +69,12 @@ const Login = () => {
             </label>
           </div>
           <div className="mb-4">
-            <label className="block">
-              <span className="after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                Mật khẩu
-              </span>
+            <label className="block text-sm font-medium text-slate-700">
+              Mật khẩu
               <input
                 type="password"
-                id="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setpassword(e.target.value)}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="Mật khẩu của bạn"
                 required
@@ -93,7 +89,7 @@ const Login = () => {
           </button>
           <p className="mt-4 text-sm text-center text-gray-600">
             Bạn chưa có tài khoản?
-            <a href="/SignUp" className="text-blue-500 hover:underline">
+            <a href="/signup" className="text-blue-500 hover:underline">
               Đăng ký
             </a>
           </p>
@@ -103,4 +99,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginCus;
