@@ -151,7 +151,7 @@ const CancelTicket = () => {
         const refundResponse = await axios.post(
           "https://api.htilssu.com/api/v1/refund",
           {
-            transactionId: "100000000000028",
+            transactionId: "100000000000011",
             orderId: detailBookingBus?._id,
           },
           {
@@ -169,7 +169,7 @@ const CancelTicket = () => {
             const cancelResponse = await axios.delete(
               `${url}/CancelTicketBus/${MaDX}`
             );
-            if (cancelResponse.status === 200) {
+            if (cancelResponse.status === 200 || CancelTicket.status === 201) {
               alert("Hủy vé thành công.");
               navigate("/my-booking");
             } else {

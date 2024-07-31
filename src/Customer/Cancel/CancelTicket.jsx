@@ -124,7 +124,7 @@ const CancelTicket = () => {
           "https://api.htilssu.com/api/v1/refund",
           {
             transactionId: "100000000000028",
-            orderId: detailBookingCar[0]?.MaDX,
+            orderId: detailBookingCar[0]?._id,
           },
           {
             headers: {
