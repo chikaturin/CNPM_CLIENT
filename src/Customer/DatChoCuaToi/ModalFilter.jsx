@@ -8,7 +8,6 @@ import TrainIcon from '../../assets/train-7037789.svg'
 // const API_BASE_URL = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com";
 function ModalFilter(checkedItems, handleChange) {
     const [showModal, setShowModal] = useState(false);
-
     // Mặc định hiển thị cả 3
     // const [checkedItems, setCheckedItems] = useState({
     //     car: true,
@@ -52,7 +51,6 @@ function ModalFilter(checkedItems, handleChange) {
     //     };
     //     fetchVehicle();
     // }, [checkedItems]);
-
     return ( 
         <>
             <a onClick={() => setShowModal(true)}>  

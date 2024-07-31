@@ -8,21 +8,13 @@ const API_BASE_URL = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com";
 function LichSuDatChoContent() {
   // Mặc định hiển thị cả 3
   const [checkedItems, setCheckedItems] = useState({
-    car: false,
-    bus: false,
-    train: false,
+    car: true,
+    bus: true,
+    train: true,
   });
 
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-
-  const handleChange = (event) => {
-    const { name, checked } = event.target;
-    setCheckedItems({
-      ...checkedItems,
-      [name]: checked,
-    });
-  };
 
   // Lấy hết từ cả 3 route => Gộp chung
   useEffect(() => {
@@ -39,9 +31,9 @@ function LichSuDatChoContent() {
 
         //---------------------------------------------------
         const combinedData = [
-          ...carResponse.data.lichSuDatXeOto,
-          ...busResponse.data.lichSuDatXeBus,
-          ...trainResponse.data.lichSuDatTau,
+          ...carResponse.data.lichSuDatXeOto.map(item => ({ ...item, type: 'car'})),
+          ...busResponse.data.lichSuDatXeBus.map(item => ({ ...item, type: 'bus'})),
+          ...trainResponse.data.lichSuDatTau.map(item => ({ ...item, type: 'train'})),
         ];
         console.log(combinedData);
         setAllData(combinedData);
@@ -56,7 +48,7 @@ function LichSuDatChoContent() {
     fetchVehicle();
   }, []);
 
-  //Lọc từ modal checkbox
+  // Lọc từ modal checkbox
   useEffect(() => {
     const filterVehicle = () => {
       let filtered = allData;
@@ -74,6 +66,18 @@ function LichSuDatChoContent() {
     filterVehicle();
   }, [checkedItems, allData]);
 
+  // useEffect(() => {
+  //   const filtered = allData.filter(item => checkedItems[item.type]);
+  //   setFilteredData(filtered);
+  // }, [checkedItems, allData]);
+
+  const handleChange = (event) => {
+    const { name, checked } = event.target;
+    setCheckedItems({
+      ...checkedItems,
+      [name]: checked,
+    });
+  };
   return (
     <div className="w-[70%] mt-10 overflow-y-auto">
       <div className="w-full shadow bg-[#EDEDED] rounded-lg mb-6">
@@ -96,7 +100,10 @@ function LichSuDatChoContent() {
       <div className="inline-flex justify-end  w-full">
         <PickRangeTimeToFilter />
         <div className="w-[1px] bg-gray-300 mx-4"></div>
-        <ModalFilter checkedItems={checkedItems} handleChange={handleChange} />
+        <ModalFilter 
+            checkedItems={checkedItems} 
+            handleChange={handleChange} 
+        />
       </div>
       {filteredData.map((vehicle, index) => (
         <div
@@ -107,7 +114,8 @@ function LichSuDatChoContent() {
             <div className="font-bold">Tuyến: </div>
             <hr className="my-4 border-t-2 border-slate-300 w-full" />
             <div className="inline-flex w-full">
-              <div className="w-[70%]">
+              <div className="w-[80%]">
+                {/* <div className="">{vehicle.type}</div> */}
                 <div className="">{vehicle.MaDX}</div>
                 <div className="">{vehicle.Date}</div>
               </div>
@@ -115,8 +123,7 @@ function LichSuDatChoContent() {
           </div>
         </div>
       ))}
-      &&
-      {filteredData.map((vehicle, index) => (
+      {/* {filteredData.map((vehicle, index) => (
         <div
           key={index._id}
           className="hover:border-[#00266B] hover:border-2 mt-5 w-full shadow bg-[#EDEDED] rounded-lg mb-6 text-lg"
@@ -133,7 +140,6 @@ function LichSuDatChoContent() {
           </div>
         </div>
       ))}
-      &&
       {filteredData.map((vehicle, index) => (
         <div
           key={index._id}
@@ -150,7 +156,7 @@ function LichSuDatChoContent() {
             </div>
           </div>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 }
