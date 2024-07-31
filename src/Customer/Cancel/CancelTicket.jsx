@@ -123,7 +123,7 @@ const CancelTicket = () => {
         const refundResponse = await axios.post(
           "https://api.htilssu.com/api/v1/refund",
           {
-            transactionId: "100000000000028",
+            transactionId: "",
             orderId: detailBookingCar[0]?._id,
           },
           {
