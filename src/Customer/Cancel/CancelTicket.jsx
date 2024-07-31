@@ -101,18 +101,18 @@ const CancelTicket = () => {
     return true;
   };
 
-  const formatDate = (dateString) => {
-    const dateObject = new Date(dateString);
+  // const formatDate = (dateString) => {
+  //   const dateObject = new Date(dateString);
 
-    const day = String(dateObject.getDate()).padStart(2, "0");
-    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
-    const year = dateObject.getFullYear();
-    const hours = String(dateObject.getHours()).padStart(2, "0");
-    const minutes = String(dateObject.getMinutes()).padStart(2, "0");
-    const seconds = String(dateObject.getSeconds()).padStart(2, "0");
+  //   const day = String(dateObject.getDate()).padStart(2, "0");
+  //   const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+  //   const year = dateObject.getFullYear();
+  //   const hours = String(dateObject.getHours()).padStart(2, "0");
+  //   const minutes = String(dateObject.getMinutes()).padStart(2, "0");
+  //   const seconds = String(dateObject.getSeconds()).padStart(2, "0");
 
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-  };
+  //   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  // };
 
   // Hàm hủy vé
   const handleCancel = async () => {
@@ -290,9 +290,7 @@ const CancelTicket = () => {
               <label className="font-bold">Lịch đi</label>
               <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
                 <FontAwesomeIcon icon={faCalendarDays} />
-                <span className="ml-2">
-                  {formatDate(detailBookingCar[0]?.NgayGioDat)}
-                </span>
+                <span className="ml-2">{detailBookingCar[0]?.NgayGioDat}</span>
               </p>
               <label className="font-bold">Nhập lịch muốn đổi</label>
               <input
@@ -427,7 +425,7 @@ const CancelTicket = () => {
               Đổi lịch
             </button>
             <button
-            onClick={() => navigate('/RatingCar')}
+              onClick={() => navigate("/RatingCar")}
               className={`bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2 ${
                 detailCar[0]?.TrangThai ? "hidden" : "block"
               }`}

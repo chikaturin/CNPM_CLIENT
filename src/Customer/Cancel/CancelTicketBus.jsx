@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import moment from "moment";
+
 import { differenceInMinutes, isSameDay } from "date-fns";
 import {
   faUser,
@@ -14,6 +16,9 @@ import {
 const CancelTicket = () => {
   const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
   const navigate = useNavigate();
+  const formattedDate = (date) => {
+    return moment(date).format("DD/MM/YYYY HH:mm:ss");
+  };
   const [searchParams] = useSearchParams();
   const MaDX = searchParams.get("MaDX");
   const today = new Date().toISOString().slice(0, 16);
@@ -127,16 +132,16 @@ const CancelTicket = () => {
     return true;
   };
 
-  const formatDate = (dateString) => {
-    const dateObject = new Date(dateString);
-    const day = String(dateObject.getDate()).padStart(2, "0");
-    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
-    const year = dateObject.getFullYear();
-    const hours = String(dateObject.getHours()).padStart(2, "0");
-    const minutes = String(dateObject.getMinutes()).padStart(2, "0");
-    const seconds = String(dateObject.getSeconds()).padStart(2, "0");
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-  };
+  // const formatDate = (dateString) => {
+  //   const dateObject = new Date(dateString);
+  //   const day = String(dateObject.getDate()).padStart(2, "0");
+  //   const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+  //   const year = dateObject.getFullYear();
+  //   const hours = String(dateObject.getHours()).padStart(2, "0");
+  //   const minutes = String(dateObject.getMinutes()).padStart(2, "0");
+  //   const seconds = String(dateObject.getSeconds()).padStart(2, "0");
+  //   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  // };
 
   const handleCancel = async () => {
     if (!canCancelTicket()) {
@@ -248,7 +253,7 @@ const CancelTicket = () => {
               <p className="border mt-2 mb-4 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
                 <FontAwesomeIcon icon={faCalendarDays} />
                 <span className="ml-2">
-                  {formatDate(detailBookingBus?.NgayGioKhoiHanh)}
+                  {formattedDate(detailBookingBus?.NgayGioKhoiHanh)}
                 </span>
               </p>
               <label className="font-bold">Nhập lịch muốn đổi</label>
