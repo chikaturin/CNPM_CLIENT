@@ -371,6 +371,13 @@ const CancelTicket = () => {
             >
               Đổi lịch
             </button>
+            <button
+              className={`bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2 ${
+                detailBookingBus?.TrangThai ? "block" : "hidden"
+              }`}
+            >
+              Đánh giá
+            </button>
           </div>
         </div>
       </div>

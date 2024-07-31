@@ -14,6 +14,11 @@ import LichSuDatCho from "../Customer/DatChoCuaToi/LichSuDatCho.jsx";
 import CancelTicket from "../Customer/Cancel/CancelTicket.jsx";
 import CancelTicketTau from "../Customer/Cancel/CancelTicketTau.jsx";
 import CancelTicketBus from "../Customer/Cancel/CancelTicketBus.jsx";
+import { RatingCar } from "../Customer/Rating/RatingCar.jsx";
+import { RatingTau } from "../Customer/Rating/RatingTau.jsx";
+import { RatingBus } from "../Customer/Rating/RatingBus.jsx";
+
+// import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx"; 
 
 const router = createBrowserRouter([
   {
@@ -68,6 +73,18 @@ const router = createBrowserRouter([
       {
         path: "CancelTicket",
         element: <CancelTicket />,
+      },
+      {
+        path: "RatingCar",
+        element: <RatingCar />,
+      },
+      {
+        path: "RatingTau",
+        element: <RatingTau />,
+      },
+      {
+        path: "RatingBus",
+        element: <RatingBus />,
       },
     ],
   },
