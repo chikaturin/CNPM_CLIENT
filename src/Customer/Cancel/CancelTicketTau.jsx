@@ -166,7 +166,7 @@ const CancelTicketTrain = () => {
             `${url}/CancelTicketTrain/${MaDX}`
           );
 
-          if (cancelResponse.status === 200) {
+          if (cancelResponse.status === 200 || cancelResponse.status === 201) {
             alert("Hủy vé thành công.");
             navigate("/my-booking");
           } else {
