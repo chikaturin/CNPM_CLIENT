@@ -123,15 +123,14 @@ const CancelTicket = () => {
         const refundResponse = await axios.post(
           "https://api.htilssu.com/api/v1/refund",
           {
-            Headers: {
-              "X-Api":
-                "ffce137ec01c33b8dc4884b036acbdbaa7b5e951ab6ba5f29f3876815ac265da",
-
-              "Content-Type": "application/json",
-            },
+            transactionId: "100000000000028",
+            orderId: detailBookingCar[0]?.MaDX,
           },
           {
-            orderId: detailBookingCar[0]?._id,
+            headers: {
+              "X-Api":
+                "ffce137ec01c33b8dc4884b036acbdbaa7b5e951ab6ba5f29f3876815ac265da",
+            },
           }
         );
 
