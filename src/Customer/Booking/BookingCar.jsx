@@ -176,10 +176,10 @@ const BookingCar = () => {
               },
               body: JSON.stringify({
                 OrderID: datXeOto._id,
-                PartnerID: "60c9c5d9c5f9c40015f6f7b6",
+                PartnerID: "1000000003",
                 ServiceName: "Đặt xe ô tô",
                 TotalMoney: ThanhTien,
-                CustomerCode: "KH01",
+                CustomerCode: "1000000024",
                 Description: `Dịch vụ đặt xe ô tô từ ${DiemSanBay} đến ${tram?.DiaChi}`,
                 LinkHome:
                   "https://cnpm-fe-thanh-b1c064a3f59c.herokuapp.com/MainHome",

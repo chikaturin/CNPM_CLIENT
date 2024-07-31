@@ -147,10 +147,10 @@ const BookingBus = () => {
               },
               body: JSON.stringify({
                 OrderID: buyTicketBus._id,
-                PartnerID: "60c9c5d9c5f9c40015f6f7b6",
+                PartnerID: "1000000003",
                 ServiceName: "Mua vé xe Buýt",
                 TotalMoney: ThanhTien,
-                CustomerCode: "KH01",
+                CustomerCode: "1000000024",
                 Description: `Dịch vụ mua vé bus từ ${DiemDon} đến ${DiemTra}`,
                 LinkHome:
                   "https://cnpm-fe-thanh-b1c064a3f59c.herokuapp.com/MainHome",

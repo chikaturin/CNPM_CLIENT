@@ -1,7 +1,7 @@
+// router.js
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App.jsx";
 import BookingCar from "../Customer/Booking/BookingCar.jsx";
-import Customer from "../Customer.jsx";
 import MainHome from "../Customer/home/MainHome.jsx";
 import ListMain from "../Customer/listBooking/ListMain.jsx";
 import BookingBus from "../Customer/Booking/BookingBus.jsx";
@@ -14,6 +14,11 @@ import LichSuDatCho from "../Customer/DatChoCuaToi/LichSuDatCho.jsx";
 import CancelTicket from "../Customer/Cancel/CancelTicket.jsx";
 import CancelTicketTau from "../Customer/Cancel/CancelTicketTau.jsx";
 import CancelTicketBus from "../Customer/Cancel/CancelTicketBus.jsx";
+import { RatingCar } from "../Customer/Rating/RatingCar.jsx";
+import { RatingTau } from "../Customer/Rating/RatingTau.jsx";
+import { RatingBus } from "../Customer/Rating/RatingBus.jsx";
+
+// import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx"; 
 
 const router = createBrowserRouter([
   {
@@ -34,16 +39,8 @@ const router = createBrowserRouter([
         element: <MainHome />,
       },
       {
-        path: "Customer",
-        element: <Customer />,
-      },
-      {
         path: "BookingCar",
         element: <BookingCar />,
-      },
-      {
-        path: "MainHome",
-        element: <App />,
       },
       {
         path: "ListMain",
@@ -76,6 +73,18 @@ const router = createBrowserRouter([
       {
         path: "CancelTicket",
         element: <CancelTicket />,
+      },
+      {
+        path: "RatingCar",
+        element: <RatingCar />,
+      },
+      {
+        path: "RatingTau",
+        element: <RatingTau />,
+      },
+      {
+        path: "RatingBus",
+        element: <RatingBus />,
       },
     ],
   },

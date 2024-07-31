@@ -150,13 +150,20 @@ const CancelTicketTrain = () => {
         const refundResponse = await axios.post(
           "https://api.htilssu.com/api/v1/refund",
           {
+            transactionId: "100000000000028",
             orderId: detailBookingTrain?._id,
+          },
+          {
+            headers: {
+              "X-Api":
+                "ffce137ec01c33b8dc4884b036acbdbaa7b5e951ab6ba5f29f3876815ac265da",
+            },
           }
         );
 
         if (refundResponse.status === 200) {
           const cancelResponse = await axios.delete(
-            `${url}/CancelBookingBus/${MaDX}`
+            `${url}/CancelTicketTrain/${MaDX}`
           );
 
           if (cancelResponse.status === 200) {
@@ -372,6 +379,14 @@ const CancelTicketTrain = () => {
               }`}
             >
               Đổi lịch
+            </button>
+            <button
+              onClick={() => navigate("/RatingCar")}
+              className={`bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2 ${
+                detailBookingTrain?.TrangThai ? "block" : "hidden"
+              }`}
+            >
+              Đánh giá
             </button>
           </div>
         </div>

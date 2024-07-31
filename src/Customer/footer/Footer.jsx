@@ -215,7 +215,7 @@ const Footer = () => {
 
           <div className="mt-10 flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-600 text-sm">
-              <p>© 2024 Traveloki. All rights reserved.</p>
+              <p>© 2024 Traveloke. All rights reserved.</p>
             </div>
           </div>
         </div>
