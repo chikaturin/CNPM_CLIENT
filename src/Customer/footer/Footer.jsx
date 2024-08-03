@@ -13,9 +13,9 @@ import btnHopTac from "../../assets/btnHopTac.png";
 const Footer = () => {
   return (
     <footer className="bg-white py-10">
-      <div>
+      {/* <div>
         <img src={bannerTopFooter} alt="banner" className="w-full" />
-      </div>
+      </div> */}
       <div className="flex justify-center w-full">
         <div className="container max-w-screen-xl gtid grid-cols-4 xl:grid-cols-3 sm:grid-cols-2 mx-auto px-4">
           <div className="p-8 flex">
