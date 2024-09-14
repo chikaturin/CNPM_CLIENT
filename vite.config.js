@@ -9,7 +9,7 @@ export default defineConfig({
     federation({
       name: 'remote',
       remotes: {
-        remote_app: 'https://wowo.htilssu.id.vn/assets/remoteEntry.js',
+        remote: 'https://wowo.htilssu.id.vn/assets/remoteEntry.js',
       },
       shared: ['react'],
     }),
