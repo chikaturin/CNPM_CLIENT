@@ -3,7 +3,7 @@ import listIcon from "../../assets/user-booking-ic.svg";
 import axios from "axios";
 import PickRangeTimeToFilter from "./PickRangeTimeToFilter";
 import ModalFilter from "./ModalFilter";
-const API_BASE_URL = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com";
+const API_BASE_URL = "http://localhost:3005";
 
 function LichSuDatChoContent() {
   // Mặc định hiển thị cả 3
@@ -31,9 +31,18 @@ function LichSuDatChoContent() {
 
         //---------------------------------------------------
         const combinedData = [
-          ...carResponse.data.lichSuDatXeOto.map(item => ({ ...item, type: 'car'})),
-          ...busResponse.data.lichSuDatXeBus.map(item => ({ ...item, type: 'bus'})),
-          ...trainResponse.data.lichSuDatTau.map(item => ({ ...item, type: 'train'})),
+          ...carResponse.data.lichSuDatXeOto.map((item) => ({
+            ...item,
+            type: "car",
+          })),
+          ...busResponse.data.lichSuDatXeBus.map((item) => ({
+            ...item,
+            type: "bus",
+          })),
+          ...trainResponse.data.lichSuDatTau.map((item) => ({
+            ...item,
+            type: "train",
+          })),
         ];
         console.log(combinedData);
         setAllData(combinedData);
@@ -100,10 +109,7 @@ function LichSuDatChoContent() {
       <div className="inline-flex justify-end  w-full">
         <PickRangeTimeToFilter />
         <div className="w-[1px] bg-gray-300 mx-4"></div>
-        <ModalFilter 
-            checkedItems={checkedItems} 
-            handleChange={handleChange} 
-        />
+        <ModalFilter checkedItems={checkedItems} handleChange={handleChange} />
       </div>
       {filteredData.map((vehicle, index) => (
         <div

@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import backgroundImage from "../../assets/introPic.png";
 
 const SearchBar = () => {
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const url = "http://localhost:3005/api";
   const [diemSanBay, setDiemKhoiHanh] = useState("");
   const [diemKetThuc, setDiemKetThuc] = useState("");
   const [selectedHour, setSelectedHour] = useState("");

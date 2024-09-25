@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <div className="flex justify-center container w-full mb-20">
+    <div>
       <header
         className="fixed top-0 flex left-0 z-50 w-full text-white py-2 border-b border-gray-200"
         style={{

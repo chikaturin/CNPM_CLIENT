@@ -7,7 +7,7 @@ import ListBookingTrain from "./ListBookingTrain";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 const ListMain = () => {
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const url = "http://localhost:3005/api";
   const [selected, setSelected] = useState("Car");
   const [searchParams] = useSearchParams();
 

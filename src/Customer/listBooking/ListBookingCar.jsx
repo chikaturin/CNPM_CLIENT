@@ -5,7 +5,7 @@ import imagelist from "../../assets/listbooking.png";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 const ListBookingCar = () => {
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const url = "http://localhost:3005/api";
   const navigate = useNavigate();
   const [detailCar, setDetailCar] = useState([]);
   const [fetchError, setFetchError] = useState(null);

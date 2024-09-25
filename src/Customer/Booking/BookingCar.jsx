@@ -38,9 +38,7 @@ const BookingCar = () => {
 
   const fetchDetailCar = async () => {
     try {
-      const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDetailCarID/${id}`
-      );
+      const res = await fetch(`http://localhost:3005/api/GetDetailCarID/${id}`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -63,7 +61,7 @@ const BookingCar = () => {
       console.log("IDTram:", IDTram);
       console.log("BookingCar parameters:", { SanBay, Date, Time, IDTram });
       const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetTramDungID/${IDTram}`
+        `http://localhost:3005/api/GetTramDungID/${IDTram}`
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -136,26 +134,23 @@ const BookingCar = () => {
 
     try {
       // Gửi yêu cầu đến server
-      const res = await fetch(
-        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/BookingCar",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            MaDetailCar: id,
-            Sdt,
-            MaTram,
-            DiemSanBay,
-            DiemDon_Tra,
-            NgayGioDat,
-            SoKm,
-            ThanhTien,
-            Description,
-          }),
-        }
-      );
+      const res = await fetch("http://localhost:3005/api/BookingCar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          MaDetailCar: id,
+          Sdt,
+          MaTram,
+          DiemSanBay,
+          DiemDon_Tra,
+          NgayGioDat,
+          SoKm,
+          ThanhTien,
+          Description,
+        }),
+      });
 
       // Xử lý phản hồi từ server
       const data = await res.json();
@@ -183,7 +178,7 @@ const BookingCar = () => {
                 Description: `Dịch vụ đặt xe ô tô từ ${DiemSanBay} đến ${tram?.DiaChi}`,
                 LinkHome:
                   "https://cnpm-fe-thanh-b1c064a3f59c.herokuapp.com/MainHome",
-                LinkReturnSuccess: `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateState/${datXeOto._id}`,
+                LinkReturnSuccess: `http://localhost:3005/api/UpdateState/${datXeOto._id}`,
               }),
             }
           );

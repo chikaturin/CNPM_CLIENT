@@ -9,7 +9,7 @@ import {
 
 const BookingTrain = () => {
   const navigate = useNavigate();
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const url = "http://localhost:3005/api";
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
   const dateParam = searchParams.get("Date");
@@ -171,7 +171,7 @@ const BookingTrain = () => {
                 Description: `Dịch vụ đặt vé tàu từ ${DiemDon} đến ${DiemTra}`,
                 LinkHome:
                   "https://cnpm-fe-thanh-b1c064a3f59c.herokuapp.com/MainHome",
-                LinkReturnSuccess: `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateState/${buyTicketTrain._id}`,
+                LinkReturnSuccess: `http://localhost:3005/api/UpdateState/${buyTicketTrain._id}`,
               }),
             }
           );

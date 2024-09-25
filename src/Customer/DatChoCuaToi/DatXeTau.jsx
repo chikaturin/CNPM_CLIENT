@@ -19,7 +19,7 @@ const formatDate = (dateString) => {
 };
 
 function RightContent() {
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const url = "http://localhost:3005/api";
   const [lichSuTrain, setLichSuTrain] = useState([]);
   const currentMaKH = "KHthanh";
   const filteredLichSuTrain = lichSuTrain.filter(
