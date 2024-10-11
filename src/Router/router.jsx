@@ -6,8 +6,6 @@ import MainHome from "../Customer/home/MainHome.jsx";
 import ListMain from "../Customer/listBooking/ListMain.jsx";
 import BookingBus from "../Customer/Booking/BookingBus.jsx";
 import BookingTrain from "../Customer/Booking/BookingTrain.jsx";
-import Login from "../SingUp_Login/LogIn.jsx";
-import SignUp from "../SingUp_Login/SignUp.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 import DatChoCuaToi from "../Customer/DatChoCuaToi/DatChoCuaToi.jsx";
 import LichSuDatCho from "../Customer/DatChoCuaToi/LichSuDatCho.jsx";
@@ -29,10 +27,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <MainHome />,
-      },
-      {
-        path: "SignUp",
-        element: <SignUp />,
       },
       {
         path: "BookingCar",
