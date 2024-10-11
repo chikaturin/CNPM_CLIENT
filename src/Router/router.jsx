@@ -18,7 +18,7 @@ import { RatingCar } from "../Customer/Rating/RatingCar.jsx";
 import { RatingTau } from "../Customer/Rating/RatingTau.jsx";
 import { RatingBus } from "../Customer/Rating/RatingBus.jsx";
 
-// import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx"; 
+// import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx";
 
 const router = createBrowserRouter([
   {
@@ -28,15 +28,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Login />,
+        element: <MainHome />,
       },
       {
         path: "SignUp",
         element: <SignUp />,
-      },
-      {
-        path: "MainHome",
-        element: <MainHome />,
       },
       {
         path: "BookingCar",
