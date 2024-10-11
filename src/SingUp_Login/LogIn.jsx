@@ -1,38 +1,37 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { UserContext } from "../Router/UserContext";
+import { Link } from "react-router-dom";
 
 const Author = () => {
-  const { login } = useContext(UserContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [NameCus, setEmail] = useState("");
+  const [IDCard, setIDCard] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const URL = "https://cnpm-nc-server.vercel.app/api";
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    if (!email || !password) {
+    if (!NameCus || !IDCard) {
       setError("Vui lòng nhập email và mật khẩu.");
       return;
     }
 
     try {
-      const response = await axios.post(
-        "https://api.htilssu.com/api/v1/auth/login",
-        {
-          username: email,
-          password,
-        }
-      );
+      const response = await axios.post(`${URL}/signin`, {
+        NameCus: NameCus,
+        IDCard,
+      });
 
       if (response.status === 200) {
-        const { token, user } = response.data;
-        login(user, token);
+        const token = response;
+        console.log(token);
+        localStorage.setItem("token", token);
+
         setSuccess("Đăng nhập thành công!");
-        window.location.href = "/MainHome";
+        // window.location.href = "/MainHome";
       } else {
         throw new Error("Đăng nhập không thành công.");
       }
@@ -50,19 +49,21 @@ const Author = () => {
       }}
     >
       <div className="w-full max-w-md p-6 mx-auto bg-white rounded-md shadow-md">
-        <h2 className="mb-4 text-2xl font-bold text-center">Đăng Nhập</h2>
+        <h2 className="mb-4 text-black text-2xl font-bold text-center">
+          Đăng Nhập
+        </h2>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block">
               <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                Email
+                Name
               </span>
               <input
-                type="email"
-                value={email}
+                type="NameCus"
+                value={NameCus}
                 onChange={(e) => setEmail(e.target.value)}
-                className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
-                placeholder="you@example.com"
+                className="block w-full px-3 py-2 mt-1 bg-white border text-black rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
+                placeholder="Your name"
                 required
               />
             </label>
@@ -73,11 +74,11 @@ const Author = () => {
                 Mật khẩu
               </span>
               <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
-                placeholder="Mật khẩu của bạn"
+                type="IDCard"
+                value={IDCard}
+                onChange={(e) => setIDCard(e.target.value)}
+                className="block w-full px-3 py-2 mt-1 bg-white border text-black rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
+                placeholder="Mã số định danh cá nhân của bạn(CCCD)"
                 required
               />
             </label>
@@ -88,6 +89,9 @@ const Author = () => {
           >
             Đăng Nhập
           </button>
+          <span className="text-red-500">
+            <Link to="/SignUp">bạn chưa có tài khoản, Đăng ký</Link>
+          </span>
         </form>
         {error && <p className="mt-4 text-center text-red-500">{error}</p>}
         {success && (
